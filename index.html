@@ -34,6 +34,10 @@
       --radius:    12px; --radius-sm: 8px; --radius-xs: 5px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    .api-key-banner { background: #7c3aed; color: white; padding: 0.6rem 1.2rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; justify-content: center; text-align: center; line-height: 1.5; }
+    .api-key-banner a { color: #fde68a; font-weight: 700; text-decoration: underline; }
+    .api-key-banner code { background: rgba(255,255,255,0.2); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.78rem; font-family: monospace; }
+    .api-key-banner.hidden { display: none; }
     body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
     h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; }
 
@@ -875,6 +879,31 @@ db.ref('/examHistory').on('value', snap => {
   document.getElementById('st-exams').textContent = Object.keys(examHistory).length;
 });
 
+
+// ── Groq API helper (free, permanent key) ────────────────────
+const GROQ_KEY = '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';
+async function geminiCall(prompt, maxTokens=400) {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${GROQ_KEY}`
+    },
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',
+      max_tokens: maxTokens,
+      temperature: 0.3,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!res.ok) {
+    const errData = await res.json().catch(()=>({}));
+    throw new Error(errData?.error?.message || `Groq API ${res.status}`);
+  }
+  const data = await res.json();
+  return data.choices?.[0]?.message?.content?.trim() || '';
+}
+
 // ── Stats ─────────────────────────────────────────────────────
 function updateStats() {
   const months=Object.keys(allVocab); let total=0, thisM=0; const cur=nowMonth();
@@ -900,27 +929,20 @@ async function fetchDefinition(word) {
       }
     } catch {}
 
-    // Step 2: Use Claude AI for definition + example + Chinese translation
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 400,
-        messages: [{
-          role: 'user',
-          content: `For the English word "${word}", respond with ONLY a JSON object in this exact format (no markdown, no extra text):\n{"definition":"(part of speech) your definition here","example":"your example sentence here","chinese":"\u4e2d\u6587\u7ffb\u8bd1"}\n\nRules:\n- definition: start with part of speech in parentheses e.g. "(noun)", then a clear modern informative definition. Do NOT use the word itself.\n- example: one natural realistic example sentence using the word in context, like Google Translate style (e.g. "the manager had lost his ability to motivate the players").\n- chinese: the most natural and commonly used Chinese translation of the word (just the word/phrase, not a sentence). Use Traditional or Simplified Chinese as appropriate.`
-        }]
-      })
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    const raw = data.content?.map(b => b.text||'').join('').trim();
+    // Step 2: Use Gemini AI for definition + example + Chinese translation
+    const prompt = `For the English word "${word}", respond with ONLY a JSON object in this exact format (no markdown, no extra text):
+{"definition":"(part of speech) your definition here","example":"your example sentence here","chinese":"中文翻译"}
+
+Rules:
+- definition: start with part of speech in parentheses e.g. "(noun)", then a clear modern informative definition. Do NOT use the word itself.
+- example: one natural realistic example sentence using the word in context, like Google Translate style (e.g. "the manager had lost his ability to motivate the players").
+- chinese: the most natural and commonly used Chinese translation of the word (just the word/phrase, not a sentence).`;
+    const raw = await geminiCall(prompt, 400);
     if (!raw) return null;
-    const clean = raw.replace(/^```[a-z]*\n?/,'').replace(/\n?```$/,'').trim();
+    const clean = raw.replace(/^```[a-z]*/,'').replace(/```$/,'').trim();
     const parsed = JSON.parse(clean);
     return { phonetic, meaning: parsed.definition||'', example: parsed.example||'', chinese: parsed.chinese||'' };
-  } catch { return null; }
+  } catch(e) { if(e.message==='NO_KEY') throw e; return null; }
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1191,6 +1213,11 @@ function openAddModal(word='', ctx='', queueMode=false) {
   document.getElementById('mContext').value=ctx;
   document.getElementById('mChinese').value='';
   document.getElementById('mMonth').value=nowMonth();
+
+// Show API key warning banner if key not set
+if (!GROQ_KEY || GROQ_KEY === 'PASTE_YOUR_GROQ_KEY_HERE') {
+  document.getElementById('apiKeyBanner').classList.remove('hidden');
+}
   document.getElementById('mEditId').value='';
   document.getElementById('mEditMonth').value='';
   document.getElementById('fetchHint').textContent='';
@@ -1219,15 +1246,19 @@ function openEditModal(month, id) {
 async function autoFetch(word) {
   const hint=document.getElementById('fetchHint');
   hint.innerHTML='<span class="spin" style="border-color:var(--gold-dk);border-right-color:transparent;"></span> Fetching meaning, example & translation…';
-  const result=await fetchDefinition(word);
-  if (result) {
-    if (!document.getElementById('mMeaning').value) document.getElementById('mMeaning').value=result.meaning;
-    if (!document.getElementById('mPron').value&&result.phonetic) document.getElementById('mPron').value=result.phonetic;
-    if (!document.getElementById('mContext').value&&result.example) document.getElementById('mContext').value=result.example;
-    if (!document.getElementById('mChinese').value&&result.chinese) document.getElementById('mChinese').value=result.chinese;
-    hint.innerHTML='<span style="color:var(--success)">✓ Meaning, example & Chinese translation fetched</span>';
-  } else {
-    hint.innerHTML='<span style="color:var(--muted-lt)">Could not auto-fetch — enter manually</span>';
+  try {
+    const result=await fetchDefinition(word);
+    if (result) {
+      if (!document.getElementById('mMeaning').value) document.getElementById('mMeaning').value=result.meaning;
+      if (!document.getElementById('mPron').value&&result.phonetic) document.getElementById('mPron').value=result.phonetic;
+      if (!document.getElementById('mContext').value&&result.example) document.getElementById('mContext').value=result.example;
+      if (!document.getElementById('mChinese').value&&result.chinese) document.getElementById('mChinese').value=result.chinese;
+      hint.innerHTML='<span style="color:var(--success)">✓ Meaning, example & Chinese fetched</span>';
+    } else {
+      hint.innerHTML='<span style="color:var(--muted-lt)">Could not auto-fetch — enter manually</span>';
+    }
+  } catch(e) {
+      hint.innerHTML=`<span style="color:var(--danger)">⚠ Error: ${e.message}</span>`;
   }
 }
 
@@ -1238,14 +1269,7 @@ document.getElementById('translateChineseBtn').addEventListener('click', async (
   const hint=document.getElementById('translateHint');
   hint.innerHTML='<span class="spin" style="border-color:var(--gold-dk);border-right-color:transparent;"></span> Translating…';
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:100,
-        messages:[{ role:'user', content:`Translate the English word or phrase "${w}" to Chinese. Respond with ONLY the Chinese translation (the most natural and common form), nothing else.` }]
-      })
-    });
-    const data = await res.json();
-    const zh = data.content?.map(b=>b.text||'').join('').trim();
+    const zh = await geminiCall(`Translate the English word or phrase "${w}" to Chinese. Respond with ONLY the Chinese translation (the most natural and common form), nothing else.`, 80);
     if (zh) { document.getElementById('mChinese').value=zh; hint.innerHTML='<span style="color:var(--success)">✓ Translated</span>'; }
     else hint.innerHTML='<span style="color:var(--muted-lt)">Translation failed</span>';
   } catch { hint.innerHTML='<span style="color:var(--muted-lt)">Translation failed</span>'; }
@@ -2615,40 +2639,18 @@ async function generateEssayTitle(category, level) {
     medium: 'The title should require some personal reflection and examples — not too abstract but beyond basic. Example style: "How Social Media Changes the Way We Make Friends" or "The Importance of Learning a Second Language".',
     hard:   'The title should be abstract, analytical or argumentative — requiring critical thinking, evidence and structured argument. Example style: "The Paradox of Progress: Does Technology Make Us More Isolated?" or "Can Art Ever Be Truly Objective?".'
   };
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 120,
-      messages: [{
-        role: 'user',
-        content: `Generate exactly 1 essay title for the category: "${category}" at difficulty level: ${level.toUpperCase()}.
+  const text = await geminiCall(`Generate exactly 1 essay title for the category: "${category}" at difficulty level: ${level.toUpperCase()}.
 
 Difficulty guideline: ${levelGuide[level] || levelGuide.medium}
 
-Respond with ONLY the title text — no quotes, no numbering, no extra explanation.`
-      }]
-    })
-  });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  const data = await res.json();
-  const text = data.content?.map(b => b.text||'').join('').trim();
+Respond with ONLY the title text — no quotes, no numbering, no extra explanation.`, 120);
   if (!text) throw new Error('Empty response');
   return text;
 }
 
 // ── API: Analyse essay ─────────────────────────────────────────
 async function analyseEssay(title, essay) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1800,
-      messages: [{
-        role: 'user',
-        content: `You are an English writing coach. Analyse the following essay written for the title: "${title}"
+  const prompt = `You are an English writing coach. Analyse the following essay written for the title: "${title}"
 
 ESSAY:
 ${essay}
@@ -2680,16 +2682,10 @@ Respond ONLY with a valid JSON object — no markdown, no backticks, no commenta
 
 score must be exactly: "high", "medium", or "low"
 Limit grammarIssues to max 6 items. Limit vocabularyImprovements to max 6 items.
-If grammar is perfect, return an empty array for grammarIssues.`
-      }]
-    })
-  });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  const data = await res.json();
-  const raw = data.content?.map(b => b.text||'').join('').trim();
+If grammar is perfect, return an empty array for grammarIssues.`;
+  const raw = await geminiCall(prompt, 1800);
   if (!raw) throw new Error('Empty response');
-  // Strip any accidental markdown fences
-  const clean = raw.replace(/^```[a-z]*\n?/,'').replace(/\n?```$/,'').trim();
+  const clean = raw.replace(/^```[a-z]*/,'').replace(/```$/,'').trim();
   return JSON.parse(clean);
 }
 
@@ -2752,6 +2748,19 @@ function renderEssayResults(r) {
 
 // ── Init ──────────────────────────────────────────────────────
 document.getElementById('mMonth').value=nowMonth();
+
+// Show API key warning banner if key not set
+if (!GROQ_KEY || GROQ_KEY === 'PASTE_YOUR_GROQ_KEY_HERE') {
+  document.getElementById('apiKeyBanner').classList.remove('hidden');
+}
+
+// ── Gemini key check banner ────────────────────────────────────
+if (!GROQ_KEY || GROQ_KEY === 'PASTE_YOUR_GROQ_KEY_HERE') {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'position:fixed;top:56px;left:0;right:0;z-index:999;background:#c94040;color:white;text-align:center;padding:0.6rem 1rem;font-size:0.85rem;font-weight:600;line-height:1.5;';
+  banner.innerHTML = '⚠️ Gemini API key not set — auto-translate &amp; meaning fetch will not work. &nbsp;<a href="https://console.groq.com" target="_blank" style="color:#ffe;text-decoration:underline;">Get free key at console.groq.com</a>&nbsp; then paste it in index.html replacing <code style="background:rgba(0,0,0,0.2);padding:0.1rem 0.3rem;border-radius:3px;">PASTE_YOUR_GROQ_KEY_HERE</code>';
+  document.body.appendChild(banner);
+}
 </script>
 </body>
 </html>
