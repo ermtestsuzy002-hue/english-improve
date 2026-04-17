@@ -1,0 +1,2757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LexiMaster — English Vocabulary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --ink:       #1a1a2e;
+      --ink-2:     #16213e;
+      --ink-3:     #0f3460;
+      --gold:      #e8b86d;
+      --gold-lt:   #f5d399;
+      --gold-dk:   #c99242;
+      --cream:     #faf7f2;
+      --paper:     #f0ece4;
+      --paper-2:   #e8e2d9;
+      --muted:     #7a7060;
+      --muted-lt:  #b0a898;
+      --border:    rgba(120,105,80,0.18);
+      --success:   #2e9e6b;
+      --danger:    #c94040;
+      --warn:      #d4820a;
+      --info:      #3a8fd4;
+      --easy-bg:   #f0fdf4; --easy-fg: #166534; --easy-brd: #86efac;
+      --norm-bg:   #fffbeb; --norm-fg: #92400e; --norm-brd: #fcd34d;
+      --hard-bg:   #fef2f2; --hard-fg: #991b1b; --hard-brd: #fca5a5;
+      --shadow-sm: 0 2px 8px rgba(26,26,46,0.07);
+      --shadow-md: 0 4px 20px rgba(26,26,46,0.12);
+      --shadow-lg: 0 8px 40px rgba(26,26,46,0.18);
+      --radius:    12px; --radius-sm: 8px; --radius-xs: 5px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+    h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; }
+
+    /* NAV */
+    .topnav { background: var(--ink); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 500; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+    .brand { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--gold); display: flex; align-items: center; gap: 0.45rem; }
+    .nav-pill { background: rgba(232,184,109,0.15); border: 1px solid rgba(232,184,109,0.3); color: var(--gold-lt); border-radius: 50px; padding: 0.18rem 0.7rem; font-size: 0.77rem; font-weight: 500; }
+    .tabbar { background: var(--ink-2); display: flex; overflow-x: auto; padding: 0 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.06); scrollbar-width: none; }
+    .tabbar::-webkit-scrollbar { display: none; }
+    .tab-btn { background: none; border: none; color: rgba(255,255,255,0.42); padding: 0.72rem 1rem; font-size: 0.81rem; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .18s, border-color .18s; display: flex; align-items: center; gap: 0.38rem; }
+    .tab-btn:hover { color: rgba(255,255,255,0.68); }
+    .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    /* PANELS */
+    .panel { display: none; padding: 1.4rem; }
+    .panel.active { display: block; }
+
+    /* CARD */
+    .card { background: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; }
+    .card-head { background: var(--ink); color: white; padding: 0.82rem 1.2rem; font-size: 0.86rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+    .card-head i { color: var(--gold); }
+    .card-body { padding: 1.2rem; }
+
+    /* FORMS */
+    .form-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.38rem; display: block; }
+    .form-control, .form-select { width: 100%; padding: 0.58rem 0.88rem; border: 1.5px solid var(--paper-2); border-radius: var(--radius-xs); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--ink); background: var(--cream); transition: border-color .18s, box-shadow .18s; outline: none; }
+    .form-control:focus, .form-select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(232,184,109,0.18); background: white; }
+    textarea.form-control { resize: vertical; }
+    .input-group { display: flex; gap: 0.4rem; }
+    .input-group .form-control { flex: 1; }
+    .form-group { margin-bottom: 0.85rem; }
+
+    /* BUTTONS */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.54rem 1.1rem; border-radius: var(--radius-xs); border: none; font-family: 'DM Sans', sans-serif; font-size: 0.87rem; font-weight: 600; cursor: pointer; transition: all .16s; white-space: nowrap; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary { background: var(--ink); color: var(--gold); border: 1.5px solid var(--ink-3); }
+    .btn-primary:hover:not(:disabled) { background: var(--ink-3); transform: translateY(-1px); }
+    .btn-gold { background: var(--gold); color: var(--ink); }
+    .btn-gold:hover:not(:disabled) { background: var(--gold-lt); transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--paper-2); }
+    .btn-outline:hover:not(:disabled) { border-color: var(--gold); color: var(--gold-dk); }
+    .btn-sm { padding: 0.32rem 0.72rem; font-size: 0.78rem; }
+    .btn-lg { padding: 0.72rem 1.5rem; font-size: 0.94rem; }
+    .btn-icon { width: 30px; height: 30px; padding: 0; border-radius: 50%; background: var(--cream); border: 1px solid var(--border); color: var(--muted); font-size: 0.82rem; }
+    .btn-icon:hover { background: var(--paper-2); color: var(--ink); }
+    .btn-icon.speak:hover { color: var(--info); }
+    .btn-icon.edit:hover  { color: var(--warn); }
+    .btn-icon.delete:hover { color: var(--danger); }
+    .btn-file { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.54rem 1.1rem; background: var(--cream); border: 1.5px dashed var(--paper-2); border-radius: var(--radius-xs); font-size: 0.87rem; font-weight: 500; color: var(--muted); cursor: pointer; transition: all .16s; }
+    .btn-file:hover { border-color: var(--gold); color: var(--gold-dk); }
+
+    /* WORD CHIPS */
+    .diff-section { border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 0.75rem; }
+    .diff-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1rem; cursor: pointer; font-weight: 700; font-size: 0.85rem; user-select: none; transition: opacity .15s; }
+    .diff-header:hover { opacity: 0.82; }
+    .diff-header.hard   { background: var(--hard-bg); color: var(--hard-fg); }
+    .diff-header.normal { background: var(--norm-bg); color: var(--norm-fg); }
+    .diff-header.easy   { background: var(--easy-bg); color: var(--easy-fg); }
+    .diff-cnt { background: rgba(0,0,0,0.1); border-radius: 50px; padding: 0.06rem 0.52rem; font-size: 0.72rem; }
+    .diff-toggle { margin-left: auto; font-size: 0.75rem; transition: transform .2s; }
+    .diff-header.collapsed .diff-toggle { transform: rotate(-90deg); }
+    .chips-body { padding: 0.82rem; background: white; }
+    .chips-body.hidden { display: none; }
+    .chips-grid { display: flex; flex-wrap: wrap; gap: 0.42rem; }
+
+    .chip { display: inline-flex; align-items: center; padding: 0.28rem 0.78rem; border-radius: 50px; border: 1.5px solid; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all .15s; user-select: none; }
+    .chip.hard   { background: var(--hard-bg); color: var(--hard-fg); border-color: var(--hard-brd); }
+    .chip.normal { background: var(--norm-bg); color: var(--norm-fg); border-color: var(--norm-brd); }
+    .chip.easy   { background: var(--easy-bg); color: var(--easy-fg); border-color: var(--easy-brd); }
+    .chip:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); filter: brightness(0.95); }
+    .chip.selected { background: var(--ink) !important; color: var(--gold) !important; border-color: var(--gold-dk) !important; box-shadow: 0 2px 8px rgba(26,26,46,0.25); }
+    .chip.saved { opacity: 0.4; cursor: default; }
+    .chip.saved::after { content: ' ✓'; font-size: 0.7rem; }
+    .chip.saved:hover { transform: none; box-shadow: none; filter: none; }
+
+    /* SELECTION BAR */
+    .sel-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--ink); border-top: 2px solid var(--gold-dk); padding: 0.72rem 1.5rem; display: flex; align-items: center; gap: 0.75rem; z-index: 600; box-shadow: 0 -4px 20px rgba(0,0,0,0.25); transform: translateY(100%); transition: transform .25s ease; }
+    .sel-bar.visible { transform: none; }
+    .sel-bar-count { color: var(--gold-lt); font-size: 0.88rem; font-weight: 600; flex: 1; }
+
+    /* SUMMARY PILLS */
+    .summary-pills { display: flex; gap: 0.48rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+    .summary-pill { display: flex; align-items: center; gap: 0.35rem; padding: 0.28rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; border: 1.5px solid; }
+    .summary-pill.hard   { background: var(--hard-bg); color: var(--hard-fg); border-color: var(--hard-brd); }
+    .summary-pill.normal { background: var(--norm-bg); color: var(--norm-fg); border-color: var(--norm-brd); }
+    .summary-pill.easy   { background: var(--easy-bg); color: var(--easy-fg); border-color: var(--easy-brd); }
+
+    /* VOCAB SECTIONS (month-grouped, left-to-right card wrap) */
+    .vocab-board { display: flex; flex-direction: column; gap: 1.2rem; }
+    .vocab-section { background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .vocab-section-head { background: var(--ink); color: white; padding: 0.65rem 1.1rem; display: flex; align-items: center; gap: 0.6rem; }
+    .vocab-section-month { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--gold); flex: 1; }
+    .vocab-section-count { background: rgba(232,184,109,0.2); color: var(--gold-lt); border-radius: 50px; padding: 0.06rem 0.55rem; font-size: 0.72rem; font-weight: 700; }
+    .vocab-cards-grid { display: flex; flex-wrap: wrap; gap: 0.7rem; padding: 0.9rem; }
+    .vcard { background: var(--cream); border-radius: var(--radius-sm); padding: 0.82rem; width: 248px; flex-shrink: 0; border: 1px solid var(--border); box-shadow: var(--shadow-sm); transition: transform .16s, box-shadow .16s; animation: cardIn .22s ease; position: relative; }
+    .vcard:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    @keyframes cardIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; } }
+    .vcard-word { font-family: 'DM Serif Display', serif; font-size: 1.08rem; display: flex; align-items: center; gap: 0.38rem; flex-wrap: wrap; margin-bottom: 0.1rem; }
+    .vcard-pron { font-size: 0.75rem; color: var(--muted); margin-bottom: 0; }
+    .vcard-meaning { font-size: 0.82rem; color: var(--ink); font-weight: 600; line-height: 1.5; margin-bottom: 0.38rem; }
+    .vcard-ctx { font-size: 0.76rem; color: var(--ink); font-style: italic; border-left: 2.5px solid var(--gold); padding-left: 0.55rem; margin-bottom: 0.48rem; line-height: 1.5; }
+    .vcard-pron-row { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; margin-bottom: 0.35rem; min-height: 1em; }
+    .vcard-pron-row .vcard-pron { margin-bottom: 0; }
+    .vcard-chinese { font-size: 0.8rem; color: var(--info); font-weight: 500; letter-spacing: 0.01em; }
+    .vcard-actions { display: flex; justify-content: flex-end; gap: 0.28rem; }
+    .badge-dup { font-size: 0.63rem; background: #fff3cd; color: #856404; border: 1px solid #ffc107; border-radius: 50px; padding: 0.08rem 0.42rem; }
+
+
+    /* STATS */
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.82rem; margin-bottom: 1.2rem; }
+    @media (max-width: 600px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
+    .stat-box { background: white; border-radius: var(--radius-sm); padding: 0.95rem; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+    .stat-n { font-family: 'DM Serif Display', serif; font-size: 1.9rem; line-height: 1; }
+    .stat-lbl { font-size: 0.73rem; color: var(--muted); font-weight: 500; margin-top: 0.15rem; }
+
+    /* SEARCH */
+    .search-bar { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .search-wrap { flex: 1; min-width: 180px; position: relative; }
+    .search-wrap i { position: absolute; left: 0.72rem; top: 50%; transform: translateY(-50%); color: var(--muted-lt); font-size: 0.85rem; }
+    .search-wrap input { padding-left: 2.1rem; }
+
+    /* EXAM */
+    .exam-wrap { max-width: 680px; margin: 0 auto; }
+    .month-check-label { display: flex; align-items: center; gap: 0.38rem; padding: 0.32rem 0.78rem; border: 1.5px solid var(--paper-2); border-radius: 50px; cursor: pointer; font-size: 0.82rem; font-weight: 500; transition: all .14s; user-select: none; }
+    .month-check-label:hover { border-color: var(--gold); background: rgba(232,184,109,0.06); }
+    .month-check-label input { accent-color: var(--gold-dk); }
+    .month-check-label.checked { border-color: var(--gold-dk); background: rgba(232,184,109,0.12); color: var(--gold-dk); }
+    .exam-pb { height: 5px; background: var(--paper-2); border-radius: 5px; margin-bottom: 1.2rem; overflow: hidden; }
+    .exam-pb-fill { height: 100%; background: linear-gradient(90deg, var(--ink-3), var(--gold)); border-radius: 5px; transition: width .32s ease; }
+    .q-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.48rem; }
+    .q-text { font-family: 'DM Serif Display', serif; font-size: 1.48rem; color: var(--ink); margin-bottom: 1.4rem; line-height: 1.35; }
+    .opt-item { background: white; border: 2px solid var(--paper-2); border-radius: var(--radius-sm); padding: 0.82rem 1rem; margin-bottom: 0.58rem; cursor: pointer; transition: all .16s; display: flex; align-items: flex-start; gap: 0.72rem; font-size: 0.88rem; line-height: 1.5; }
+    .opt-item:hover { border-color: var(--gold); background: rgba(232,184,109,0.06); }
+    .opt-letter { width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: var(--gold); font-size: 0.73rem; font-weight: 700; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .opt-item.correct { border-color: var(--success); background: rgba(46,158,107,0.08); }
+    .opt-item.correct .opt-letter { background: var(--success); color: white; }
+    .opt-item.wrong   { border-color: var(--danger); background: rgba(201,64,64,0.08); }
+    .opt-item.wrong   .opt-letter { background: var(--danger); color: white; }
+
+    /* RESULTS */
+    .result-hero { text-align: center; padding: 1.8rem; }
+    .result-emoji { font-size: 4rem; margin-bottom: 0.4rem; }
+    .result-score-big { font-family: 'DM Serif Display', serif; font-size: 3.2rem; line-height: 1; margin: 0.4rem 0 0.2rem; }
+    .result-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.7rem; margin: 1.1rem 0 1.4rem; }
+    .result-box { border-radius: var(--radius-sm); padding: 0.8rem; text-align: center; }
+    .result-box .n { font-family: 'DM Serif Display', serif; font-size: 1.7rem; line-height: 1; }
+    .result-box .l { font-size: 0.73rem; font-weight: 500; margin-top: 0.18rem; }
+    .box-correct { background: rgba(46,158,107,0.1); color: var(--success); }
+    .box-wrong   { background: rgba(201,64,64,0.1);  color: var(--danger); }
+    .box-score   { background: rgba(26,26,46,0.08);  color: var(--ink); }
+    .review-item { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.58rem 0; border-bottom: 1px solid var(--border); font-size: 0.84rem; }
+    .review-item:last-child { border-bottom: none; }
+
+    /* HISTORY */
+    .hist-item { background: white; border-radius: var(--radius-sm); padding: 0.95rem 1.2rem; margin-bottom: 0.58rem; border: 1px solid var(--border); box-shadow: var(--shadow-sm); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .hist-meta { font-size: 0.8rem; color: var(--muted); margin-top: 0.18rem; }
+    .score-badge { font-family: 'DM Serif Display', serif; font-size: 1.4rem; padding: 0.18rem 0.7rem; border-radius: 8px; }
+    .score-hi  { background: rgba(46,158,107,0.12); color: var(--success); }
+    .score-mid { background: rgba(212,130,10,0.12);  color: var(--warn); }
+    .score-lo  { background: rgba(201,64,64,0.12);   color: var(--danger); }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15,20,40,0.55); z-index: 800; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box { background: white; border-radius: var(--radius); width: 100%; max-width: 510px; box-shadow: var(--shadow-lg); transform: translateY(18px) scale(0.97); transition: transform .2s ease; max-height: 90vh; overflow-y: auto; }
+    .modal-overlay.open .modal-box { transform: none; }
+    .modal-head { background: var(--ink); color: white; padding: 0.95rem 1.2rem; display: flex; justify-content: space-between; align-items: center; border-radius: var(--radius) var(--radius) 0 0; }
+    .modal-head h5 { font-family: 'DM Serif Display', serif; font-size: 1.18rem; color: var(--gold); font-weight: normal; }
+    .modal-close { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 1.15rem; cursor: pointer; transition: color .14s; padding: 0.18rem; }
+    .modal-close:hover { color: white; }
+    .modal-body { padding: 1.2rem; }
+    .modal-foot { padding: 0.95rem 1.2rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 0.48rem; }
+    .fetch-hint { font-size: 0.77rem; color: var(--muted-lt); margin-top: 0.28rem; min-height: 1.3em; }
+
+    /* TOAST */
+    .toast-wrap { position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%); z-index: 900; display: flex; flex-direction: column; gap: 0.48rem; align-items: center; pointer-events: none; }
+    .toast-item { background: var(--ink); color: white; border-radius: 50px; padding: 0.52rem 1.2rem; font-size: 0.84rem; font-weight: 500; box-shadow: var(--shadow-md); opacity: 0; transform: translateY(8px); transition: all .22s; border-left: 3px solid var(--gold); white-space: nowrap; }
+    .toast-item.show { opacity: 1; transform: none; }
+    .toast-item.toast-err { border-left-color: var(--danger); }
+    .toast-item.toast-ok  { border-left-color: var(--success); }
+
+    /* MISC */
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted-lt); }
+    .empty-state i { font-size: 2.8rem; margin-bottom: 0.7rem; display: block; }
+    .empty-state p { font-size: 0.88rem; }
+    .section-title { font-family: 'DM Serif Display', serif; font-size: 1.38rem; margin-bottom: 0.22rem; }
+    .section-sub { font-size: 0.83rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .flex-row { display: flex; flex-wrap: wrap; gap: 0.82rem; }
+    .flex-col { flex: 1; min-width: 180px; }
+    .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+    .spin { width: 1em; height: 1em; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; display: inline-block; animation: spin .48s linear infinite; vertical-align: -0.14em; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #pdfStatus { font-size: 0.79rem; margin-top: 0.48rem; min-height: 1.35em; }
+    .check-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    /* ── ESSAY CHECK ── */
+    /* Essay level picker */
+    .level-picker { display: none; margin-top: 1.1rem; animation: fadeSlideIn .22s ease; }
+    .level-picker.visible { display: block; }
+    @keyframes fadeSlideIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+    .level-picker-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem; }
+    .level-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.7rem; }
+    @media (max-width: 520px) { .level-cards { grid-template-columns: 1fr; } }
+    .level-card {
+      border: 2px solid var(--border); border-radius: var(--radius-sm);
+      padding: 0.85rem 0.75rem; cursor: pointer; text-align: center;
+      background: white; transition: all .18s; user-select: none;
+    }
+    .level-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .level-card .lc-icon  { font-size: 1.6rem; display: block; margin-bottom: 0.3rem; }
+    .level-card .lc-name  { font-weight: 700; font-size: 0.9rem; }
+    .level-card .lc-desc  { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.4; }
+    .level-card[data-level="easy"]   { border-color: var(--easy-brd); }
+    .level-card[data-level="easy"]:hover   { border-color: var(--easy-fg); background: var(--easy-bg); }
+    .level-card[data-level="medium"] { border-color: var(--norm-brd); }
+    .level-card[data-level="medium"]:hover { border-color: var(--norm-fg); background: var(--norm-bg); }
+    .level-card[data-level="hard"]   { border-color: var(--hard-brd); }
+    .level-card[data-level="hard"]:hover   { border-color: var(--hard-fg); background: var(--hard-bg); }
+    .level-card.selected[data-level="easy"]   { border-color: var(--easy-fg); background: var(--easy-bg); box-shadow: 0 0 0 3px rgba(134,239,172,.35); }
+    .level-card.selected[data-level="medium"] { border-color: var(--norm-fg); background: var(--norm-bg); box-shadow: 0 0 0 3px rgba(252,211,77,.35); }
+    .level-card.selected[data-level="hard"]   { border-color: var(--hard-fg); background: var(--hard-bg); box-shadow: 0 0 0 3px rgba(252,165,165,.35); }
+    .level-badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.18rem 0.65rem; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 700;
+    }
+    .level-badge.easy   { background: var(--easy-bg); color: var(--easy-fg); }
+    .level-badge.medium { background: var(--norm-bg); color: var(--norm-fg); }
+    .level-badge.hard   { background: var(--hard-bg); color: var(--hard-fg); }
+
+    .essay-wrap { max-width: 760px; margin: 0 auto; }
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 0.6rem; margin-bottom: 1.25rem; }
+    .cat-btn {
+      padding: 0.7rem 0.6rem; border-radius: var(--radius-sm);
+      border: 2px solid var(--border); background: white;
+      cursor: pointer; text-align: center; transition: all .16s;
+      font-size: 0.82rem; font-weight: 600; font-family: 'DM Sans', sans-serif;
+      color: var(--ink); line-height: 1.4;
+    }
+    .cat-btn:hover { border-color: var(--gold); background: rgba(232,184,109,0.06); transform: translateY(-1px); }
+    .cat-btn.selected { border-color: var(--gold-dk); background: rgba(232,184,109,0.15); color: var(--gold-dk); box-shadow: 0 0 0 3px rgba(232,184,109,0.2); }
+    .cat-btn .cat-icon { font-size: 1.5rem; display: block; margin-bottom: 0.28rem; }
+
+    .a4-wrap { background: #e8e2d9; padding: 2rem 1rem; border-radius: var(--radius); }
+    .a4-paper {
+      background: white;
+      border-radius: 3px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.08);
+      padding: 3rem 3.5rem;
+      max-width: 640px;
+      margin: 0 auto;
+      min-height: 820px;
+      display: flex; flex-direction: column;
+    }
+    .a4-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem; color: var(--ink);
+      text-align: center; margin-bottom: 2rem;
+      padding-bottom: 1rem; border-bottom: 1.5px solid var(--paper-2);
+      line-height: 1.4;
+    }
+    .a4-textarea {
+      flex: 1; width: 100%;
+      border: none; outline: none; resize: none;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 1rem; line-height: 1.9; color: var(--ink);
+      min-height: 660px; background: transparent;
+    }
+    .a4-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 0.75rem; border-top: 1px solid var(--paper-2);
+      font-size: 0.78rem; color: var(--muted-lt);
+    }
+
+    /* Results */
+    .essay-result-section { margin-bottom: 1.25rem; }
+    .essay-result-section h4 { font-family: 'DM Serif Display', serif; font-size: 1.1rem; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
+    .relevance-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.82rem; font-weight: 700; }
+    .rel-high   { background: rgba(46,158,107,0.12); color: var(--success); }
+    .rel-medium { background: rgba(212,130,10,0.12); color: var(--warn); }
+    .rel-low    { background: rgba(201,64,64,0.12); color: var(--danger); }
+    .grammar-item { background: var(--cream); border-radius: var(--radius-sm); padding: 0.7rem 0.9rem; margin-bottom: 0.5rem; border-left: 3px solid var(--danger); }
+    .grammar-orig { font-size: 0.85rem; color: var(--danger); text-decoration: line-through; }
+    .grammar-fix  { font-size: 0.85rem; color: var(--success); font-weight: 600; margin: 0.2rem 0; }
+    .grammar-why  { font-size: 0.78rem; color: var(--muted); }
+    .vocab-improve-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+    .vocab-improve-table th { background: var(--ink); color: var(--gold); padding: 0.5rem 0.75rem; text-align: left; font-weight: 600; font-size: 0.77rem; }
+    .vocab-improve-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .vocab-improve-table tr:last-child td { border-bottom: none; }
+    .vocab-improve-table tr:nth-child(even) td { background: var(--cream); }
+    .word-orig { color: var(--danger); font-weight: 600; }
+    .word-sugg { color: var(--success); font-weight: 600; }
+    .overall-box { background: linear-gradient(135deg, var(--ink), var(--ink-3)); color: white; border-radius: var(--radius-sm); padding: 1rem 1.25rem; font-size: 0.9rem; line-height: 1.7; }
+    .essay-loading { text-align: center; padding: 3rem; }
+    .essay-loading .spin { width: 2rem; height: 2rem; border-width: 3px; color: var(--gold-dk); }
+    @media (max-width: 600px) {
+      .a4-paper { padding: 1.5rem 1.25rem; }
+      .cat-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* VOCAB MULTI-SELECT */
+    .vocab-section-head { cursor: default; }
+    .vocab-section-head.selectable { cursor: pointer; }
+    .vcard.vs-select-mode { cursor: pointer; }
+    .vcard.vs-select-mode:hover { border-color: var(--gold); }
+    .vcard.vs-checked { border-color: var(--gold-dk) !important; background: rgba(232,184,109,0.12) !important; box-shadow: 0 0 0 2px rgba(232,184,109,0.35) !important; }
+    .vcard-cb { display: none; position: absolute; top: 0.55rem; left: 0.55rem; width: 18px; height: 18px; accent-color: var(--gold-dk); cursor: pointer; }
+    .vcard.vs-select-mode .vcard-cb { display: block; }
+    .vs-section-cb { display: none; accent-color: var(--gold-dk); cursor: pointer; width: 16px; height: 16px; }
+    .vocab-section-head.vs-select-mode .vs-section-cb { display: block; }
+    .vocab-del-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--danger); border-top: 2px solid rgba(255,255,255,0.2); padding: 0.72rem 1.5rem; display: flex; align-items: center; gap: 0.75rem; z-index: 601; box-shadow: 0 -4px 20px rgba(0,0,0,0.3); transform: translateY(100%); transition: transform .25s ease; }
+    .vocab-del-bar.visible { transform: none; }
+    .vocab-del-bar-count { color: white; font-size: 0.88rem; font-weight: 600; flex: 1; }
+    .vs-toggle-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: var(--radius-xs); padding: 0.28rem 0.7rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.35rem; }
+    .vs-toggle-btn:hover { background: rgba(255,255,255,0.25); }
+    .btn-select-mode { background: transparent; color: var(--ink); border: 1.5px solid var(--paper-2); }
+    .btn-select-mode.active { background: rgba(201,64,64,0.1); color: var(--danger); border-color: rgba(201,64,64,0.4); }
+    /* Section collapse */
+    .vocab-section-toggle { margin-left: 0; font-size: 0.78rem; color: var(--gold-lt); cursor: pointer; padding: 0.18rem 0.42rem; border-radius: 4px; transition: background .14s; }
+    .vocab-section-toggle:hover { background: rgba(255,255,255,0.12); }
+    .vocab-cards-grid.hidden { display: none; }
+
+    @media (max-width: 768px) { .panel { padding: 1rem; } .kanban-col { flex: 0 0 240px; } .sel-bar { padding: 0.62rem 1rem; } }
+  </style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="brand"><i class="bi bi-book-half"></i> LexiMaster</div>
+  <span class="nav-pill" id="totalNavPill">0 words</span>
+</header>
+
+<nav class="tabbar">
+  <button class="tab-btn active" data-tab="read"><i class="bi bi-file-text"></i> Read &amp; Learn</button>
+  <button class="tab-btn" data-tab="vocab"><i class="bi bi-collection"></i> My Vocabulary</button>
+  <button class="tab-btn" data-tab="exam"><i class="bi bi-pencil-square"></i> Take Exam</button>
+  <button class="tab-btn" data-tab="history"><i class="bi bi-clock-history"></i> History</button>
+  <button class="tab-btn" data-tab="essay"><i class="bi bi-pencil-fill"></i> Essay Check</button>
+</nav>
+
+<!-- ══ READ & LEARN ══ -->
+<section class="panel active" id="panel-read">
+  <div style="max-width:900px; margin:0 auto;">
+    <h2 class="section-title">Read &amp; Learn</h2>
+    <p class="section-sub">Paste text or upload a PDF — words are auto-sorted into Easy / Normal / Hard. Click any word to add it to your vocabulary.</p>
+
+    <div class="card" style="margin-bottom:1rem;">
+      <div class="card-head"><i class="bi bi-input-cursor-text"></i> Input Text</div>
+      <div class="card-body">
+        <div class="flex-row" style="align-items:flex-start;">
+          <div class="flex-col" style="flex:3;">
+            <textarea class="form-control" id="textInput" rows="5" placeholder="Paste English text here, then click Analyse…"></textarea>
+          </div>
+          <div style="flex:0 0 auto; display:flex; flex-direction:column; gap:0.5rem;">
+            <label class="btn-file" for="pdfUpload"><i class="bi bi-file-earmark-pdf"></i> Upload PDF</label>
+            <input type="file" id="pdfUpload" accept=".pdf" style="display:none">
+            <button class="btn btn-gold" id="analyseBtn"><i class="bi bi-stars"></i> Analyse</button>
+            <button class="btn btn-outline" id="refreshReadBtn" title="Clear and start over"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          </div>
+        </div>
+        <div id="pdfStatus"></div>
+      </div>
+    </div>
+
+    <!-- chips output -->
+    <div id="chipsOutput" style="display:none;">
+      <div class="summary-pills" id="summaryPills"></div>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.75rem;">
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+          <button class="btn btn-sm btn-outline" id="selAllHardBtn"><i class="bi bi-check2-all"></i> Select All Hard</button>
+          <button class="btn btn-sm btn-outline" id="selAllNormBtn"><i class="bi bi-check2"></i> Select All Normal</button>
+          <button class="btn btn-sm btn-outline" id="clearSelBtn" style="display:none;"><i class="bi bi-x"></i> Clear</button>
+        </div>
+        <label style="font-size:0.8rem; color:var(--muted); display:flex; align-items:center; gap:0.35rem; cursor:pointer;">
+          <input type="checkbox" id="hideKnownChk" style="accent-color:var(--gold-dk);"> Hide already saved
+        </label>
+      </div>
+
+      <div class="diff-section">
+        <div class="diff-header hard" data-target="chips-hard">
+          <span>🔴</span><span>Hard Words</span>
+          <span class="diff-cnt" id="cnt-hard">0</span>
+          <span class="diff-toggle">▼</span>
+        </div>
+        <div class="chips-body" id="chips-hard"><div class="chips-grid" id="grid-hard"></div></div>
+      </div>
+
+      <div class="diff-section">
+        <div class="diff-header normal" data-target="chips-normal">
+          <span>🟡</span><span>Normal Words</span>
+          <span class="diff-cnt" id="cnt-normal">0</span>
+          <span class="diff-toggle">▼</span>
+        </div>
+        <div class="chips-body" id="chips-normal"><div class="chips-grid" id="grid-normal"></div></div>
+      </div>
+
+      <div class="diff-section">
+        <div class="diff-header easy collapsed" data-target="chips-easy">
+          <span>🟢</span><span>Easy Words</span>
+          <span class="diff-cnt" id="cnt-easy">0</span>
+          <span class="diff-toggle">▼</span>
+        </div>
+        <div class="chips-body hidden" id="chips-easy"><div class="chips-grid" id="grid-easy"></div></div>
+      </div>
+    </div>
+
+    <div id="readPlaceholder" style="text-align:center; padding:3rem 1rem; color:var(--muted-lt);">
+      <i class="bi bi-stars" style="font-size:2.8rem; display:block; margin-bottom:0.75rem; opacity:0.3;"></i>
+      <p style="font-size:0.9rem;">Paste text or upload a PDF, then click <strong style="color:var(--gold-dk);">Analyse</strong>.<br>Words will be sorted into 🔴 Hard / 🟡 Normal / 🟢 Easy.<br>Click any word chip to add it to your vocabulary.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MY VOCABULARY ══ -->
+<section class="panel" id="panel-vocab">
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-n" id="st-total">0</div><div class="stat-lbl">Total Words</div></div>
+    <div class="stat-box"><div class="stat-n" id="st-months">0</div><div class="stat-lbl">Months</div></div>
+    <div class="stat-box"><div class="stat-n" id="st-thismonth">0</div><div class="stat-lbl">This Month</div></div>
+    <div class="stat-box"><div class="stat-n" id="st-exams">0</div><div class="stat-lbl">Exams Taken</div></div>
+  </div>
+  <div class="search-bar">
+    <div class="search-wrap">
+      <i class="bi bi-search"></i>
+      <input type="text" class="form-control" id="searchInput" placeholder="Search words or meanings…">
+    </div>
+    <select class="form-control" id="filterMonthSel" style="min-width:145px; flex:0 0 auto;"><option value="">All Months</option></select>
+
+    <button class="btn btn-outline btn-sm" id="clearFiltersBtn"><i class="bi bi-x-circle"></i> Clear</button>
+    <button class="btn btn-outline btn-sm btn-select-mode" id="vsSelectModeBtn"><i class="bi bi-check2-square"></i> Select</button>
+    <button class="btn btn-gold btn-sm" id="addManualBtn"><i class="bi bi-plus-lg"></i> Add Word</button>
+  </div>
+  <div class="vocab-board" id="kanbanBoard">
+    <div class="empty-state"><i class="bi bi-collection"></i><p>No vocabulary yet.<br>Use Read &amp; Learn to add words!</p></div>
+  </div>
+</section>
+
+<!-- ══ EXAM ══ -->
+<section class="panel" id="panel-exam">
+  <div class="exam-wrap">
+    <div id="examSetup">
+      <h2 class="section-title">Take an Exam</h2>
+      <p class="section-sub">Test yourself on your saved vocabulary</p>
+      <div class="card">
+        <div class="card-head"><i class="bi bi-sliders"></i> Configure</div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label">Select Months</label>
+            <div class="check-grid" id="monthCheckGrid"><span style="color:var(--muted);font-size:0.85rem;">No vocabulary saved yet.</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="flex-row">
+            <div class="flex-col">
+              <div class="form-group">
+                <label class="form-label">Number of Questions</label>
+                <input type="number" class="form-control" id="qCountInput" value="10" min="1" max="50" style="max-width:130px;">
+              </div>
+            </div>
+            <div class="flex-col">
+              <div class="form-group">
+                <label class="form-label">Question Style</label>
+                <select class="form-control" id="qTypeSelect">
+                  <option value="meaning">Word → Meaning</option>
+                  <option value="word">Meaning → Word</option>
+                  <option value="mixed">Mixed</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-gold btn-lg" id="startExamBtn" style="margin-top:0.25rem;"><i class="bi bi-play-fill"></i> Start Exam</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="examInProgress" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; gap:0.5rem; flex-wrap:wrap;">
+        <span style="font-size:0.84rem; font-weight:600; color:var(--muted);" id="examCounter">Question 1 of 10</span>
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <span style="font-size:0.84rem; font-weight:600;" id="examScoreDisp">✓ 0 &nbsp; ✗ 0</span>
+          <button class="btn btn-sm" id="giveUpBtn" style="background:rgba(201,64,64,0.1);color:var(--danger);border:1px solid rgba(201,64,64,0.3);"><i class="bi bi-flag"></i> Give Up</button>
+        </div>
+      </div>
+      <div class="exam-pb"><div class="exam-pb-fill" id="examBar" style="width:0%"></div></div>
+      <div class="card">
+        <div class="card-body">
+          <div class="q-label" id="qTypeLabel">What is the meaning of:</div>
+          <div class="q-text" id="qText"></div>
+          <div id="qOptions"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="examResults" style="display:none;">
+      <div class="card">
+        <div class="result-hero">
+          <div class="result-emoji" id="resEmoji">🎉</div>
+          <h3 class="section-title" style="font-size:1.55rem; margin-bottom:0.12rem;">Exam Complete!</h3>
+          <div style="font-size:0.82rem; color:var(--muted);" id="resDateStr"></div>
+          <div class="result-score-big" id="resPct">—</div>
+          <div style="font-size:0.82rem; color:var(--muted); margin-bottom:0.5rem;">score</div>
+          <div class="result-grid">
+            <div class="result-box box-correct"><div class="n" id="resCorrect">0</div><div class="l">Correct</div></div>
+            <div class="result-box box-wrong">  <div class="n" id="resWrong">0</div>  <div class="l">Wrong</div></div>
+            <div class="result-box box-score">  <div class="n" id="resTotal">0</div>  <div class="l">Total</div></div>
+          </div>
+        </div>
+        <div style="padding:0 1.5rem 1.5rem;">
+          <div style="font-weight:600; font-size:0.84rem; margin-bottom:0.72rem;">Review</div>
+          <div id="reviewList"></div>
+        </div>
+        <div style="padding:0 1.5rem 1.5rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button class="btn btn-gold" id="retakeBtn"><i class="bi bi-arrow-repeat"></i> Try Again</button>
+          <button class="btn btn-outline" id="goVocabBtn"><i class="bi bi-collection"></i> View Vocabulary</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HISTORY ══ -->
+<section class="panel" id="panel-history">
+  <div style="max-width:680px; margin:0 auto;">
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.2rem;">
+      <h2 class="section-title" style="margin-bottom:0;">Exam History</h2>
+      <button class="btn btn-sm" id="resetHistoryBtn" style="background:rgba(201,64,64,0.1);color:var(--danger);border:1px solid rgba(201,64,64,0.3);"><i class="bi bi-trash"></i> Reset All</button>
+    </div>
+    <p class="section-sub">Your past exam results</p>
+    <div id="historyList"><div class="empty-state"><i class="bi bi-clock-history"></i><p>No exams taken yet.</p></div></div>
+  </div>
+</section>
+
+<!-- ══ ESSAY CHECK ══ -->
+<section class="panel" id="panel-essay">
+  <div class="essay-wrap">
+
+    <!-- STEP 1: Category selection -->
+    <div id="essaySetup">
+      <h2 class="section-title">Essay &amp; Grammar Check</h2>
+      <p class="section-sub">Pick a category, get a random title, write your essay — then get AI feedback on relevance, grammar &amp; vocabulary.</p>
+
+      <div class="card">
+        <div class="card-head"><i class="bi bi-grid-3x3-gap"></i> Choose a Category</div>
+        <div class="card-body">
+          <div class="cat-grid" id="catGrid">
+            <button class="cat-btn" data-cat="Love &amp; Relationships"><span class="cat-icon">💕</span>Love &amp; Relationships</button>
+            <button class="cat-btn" data-cat="Science &amp; Technology"><span class="cat-icon">🔬</span>Science &amp; Tech</button>
+            <button class="cat-btn" data-cat="Philosophy"><span class="cat-icon">🧠</span>Philosophy</button>
+            <button class="cat-btn" data-cat="History"><span class="cat-icon">📜</span>History</button>
+            <button class="cat-btn" data-cat="Environment &amp; Nature"><span class="cat-icon">🌿</span>Environment</button>
+            <button class="cat-btn" data-cat="Society &amp; Culture"><span class="cat-icon">🌍</span>Society &amp; Culture</button>
+            <button class="cat-btn" data-cat="Art &amp; Literature"><span class="cat-icon">🎨</span>Art &amp; Literature</button>
+            <button class="cat-btn" data-cat="Sports"><span class="cat-icon">⚽</span>Sports</button>
+            <button class="cat-btn" data-cat="Travel &amp; Adventure"><span class="cat-icon">✈️</span>Travel &amp; Adventure</button>
+            <button class="cat-btn" data-cat="Food &amp; Cuisine"><span class="cat-icon">🍜</span>Food &amp; Cuisine</button>
+            <button class="cat-btn" data-cat="Health &amp; Wellness"><span class="cat-icon">💊</span>Health &amp; Wellness</button>
+            <button class="cat-btn" data-cat="Music"><span class="cat-icon">🎵</span>Music</button>
+            <button class="cat-btn" data-cat="Economics &amp; Finance"><span class="cat-icon">💰</span>Economics</button>
+            <button class="cat-btn" data-cat="Film &amp; Entertainment"><span class="cat-icon">🎬</span>Film &amp; Entertainment</button>
+            <button class="cat-btn" data-cat="Education"><span class="cat-icon">📚</span>Education</button>
+            <button class="cat-btn" data-cat="Urban Life"><span class="cat-icon">🏙️</span>Urban Life</button>
+            <button class="cat-btn" data-cat="Space &amp; Universe"><span class="cat-icon">🌌</span>Space &amp; Universe</button>
+            <button class="cat-btn" data-cat="Artificial Intelligence"><span class="cat-icon">🤖</span>Artificial Intelligence</button>
+            <button class="cat-btn" data-cat="Psychology &amp; Mindfulness"><span class="cat-icon">🧘</span>Psychology</button>
+            <button class="cat-btn" data-cat="Politics &amp; Leadership"><span class="cat-icon">🗳️</span>Politics &amp; Leadership</button>
+          </div>
+          <!-- Level picker — shown after category selected -->
+          <div class="level-picker" id="levelPicker">
+            <div class="level-picker-label">Choose Title Difficulty</div>
+            <div class="level-cards">
+              <div class="level-card" data-level="easy">
+                <span class="lc-icon">🟢</span>
+                <div class="lc-name">Easy</div>
+                <div class="lc-desc">Simple, everyday topics — great for beginners &amp; casual writing practice</div>
+              </div>
+              <div class="level-card" data-level="medium">
+                <span class="lc-icon">🟡</span>
+                <div class="lc-name">Medium</div>
+                <div class="lc-desc">Moderate depth — requires some thought, examples &amp; personal opinion</div>
+              </div>
+              <div class="level-card" data-level="hard">
+                <span class="lc-icon">🔴</span>
+                <div class="lc-name">Hard</div>
+                <div class="lc-desc">Abstract &amp; analytical — needs critical thinking, argument &amp; evidence</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:0.9rem; display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+            <button class="btn btn-gold btn-lg" id="essayStartBtn" disabled>
+              <i class="bi bi-play-fill"></i> Start Writing
+            </button>
+            <span id="essayCatStatus" style="font-size:0.82rem; color:var(--muted);">Select a category first</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Writing area -->
+    <div id="essayWriting" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+        <div>
+          <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.2rem;">
+            <span id="essayCatLabel" style="font-size:0.82rem; font-weight:600; color:var(--muted);"></span>
+            <span id="essayLevelBadge" class="level-badge medium"></span>
+          </div>
+          <div style="font-size:0.78rem; color:var(--muted); margin-top:0.2rem;" id="essayWordCountLabel">0 words</div>
+        </div>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn btn-sm" id="essayGiveUpBtn" style="background:rgba(201,64,64,0.1);color:var(--danger);border:1px solid rgba(201,64,64,0.3);"><i class="bi bi-flag"></i> Give Up</button>
+          <button class="btn btn-gold" id="essaySubmitBtn"><i class="bi bi-send"></i> Submit Essay</button>
+        </div>
+      </div>
+
+      <div class="a4-wrap">
+        <div class="a4-paper">
+          <div class="a4-title" id="essayTitleDisplay">Loading title…</div>
+          <textarea class="a4-textarea" id="essayTextarea" placeholder="Begin writing your essay here…&#10;&#10;Express your thoughts clearly and develop your ideas with examples and reasoning."></textarea>
+          <div class="a4-footer">
+            <span id="essayCharCount">0 characters</span>
+            <span>Essay Check · LexiMaster</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: Loading -->
+    <div id="essayLoading" style="display:none;">
+      <div class="essay-loading card">
+        <div class="card-body" style="text-align:center; padding:3rem;">
+          <div class="spin" style="width:2.5rem;height:2.5rem;border-width:3px;color:var(--gold-dk);margin:0 auto 1rem;"></div>
+          <h4 style="font-family:'DM Serif Display',serif; margin-bottom:0.4rem;">Analysing your essay…</h4>
+          <p style="font-size:0.85rem;color:var(--muted);" id="essayLoadingMsg">Checking grammar and vocabulary…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Results -->
+    <div id="essayResults" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+        <div>
+          <h3 class="section-title" style="font-size:1.3rem; margin-bottom:0.1rem;">Essay Feedback</h3>
+          <div style="font-size:0.8rem;color:var(--muted);" id="essayResultMeta"></div>
+        </div>
+        <button class="btn btn-gold" id="essayNewBtn"><i class="bi bi-arrow-repeat"></i> Write Another</button>
+      </div>
+
+      <!-- Topic Relevance -->
+      <div class="card essay-result-section">
+        <div class="card-body">
+          <h4><i class="bi bi-bullseye" style="color:var(--gold-dk);"></i> Topic Relevance</h4>
+          <div id="relevanceBadge" style="margin-bottom:0.6rem;"></div>
+          <p id="relevanceVerdict" style="font-weight:600; font-size:0.9rem; margin-bottom:0.3rem;"></p>
+          <p id="relevanceDetails" style="font-size:0.85rem; color:var(--muted); line-height:1.6;"></p>
+        </div>
+      </div>
+
+      <!-- Grammar -->
+      <div class="card essay-result-section">
+        <div class="card-body">
+          <h4><i class="bi bi-spell-check" style="color:var(--danger);"></i> Grammar Issues <span id="grammarCount" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--muted);font-weight:normal;"></span></h4>
+          <div id="grammarList"></div>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card essay-result-section">
+        <div class="card-body">
+          <h4><i class="bi bi-stars" style="color:var(--warn);"></i> Vocabulary Improvements</h4>
+          <div id="vocabImprovements"></div>
+        </div>
+      </div>
+
+      <!-- Overall -->
+      <div class="card essay-result-section">
+        <div class="card-body">
+          <h4><i class="bi bi-chat-quote" style="color:var(--info);"></i> Overall Feedback</h4>
+          <div class="overall-box" id="overallFeedback"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SELECTION BAR -->
+<div class="sel-bar" id="selBar">
+  <span class="sel-bar-count" id="selBarCount">0 words selected</span>
+  <button class="btn btn-gold btn-sm" id="addSelBtn"><i class="bi bi-plus-lg"></i> Add Selected</button>
+  <button class="btn btn-sm" style="background:rgba(255,255,255,0.12); color:white; border:1px solid rgba(255,255,255,0.2);" id="clearSelBarBtn"><i class="bi bi-x"></i></button>
+</div>
+
+<!-- VOCAB MULTI-DELETE BAR -->
+<div class="vocab-del-bar" id="vocabDelBar">
+  <span class="vocab-del-bar-count" id="vocabDelBarCount">0 words selected</span>
+  <button class="vs-toggle-btn" id="vocabDelConfirmBtn"><i class="bi bi-trash"></i> Delete Selected</button>
+  <button class="vs-toggle-btn" id="vocabDelCancelBtn"><i class="bi bi-x"></i> Cancel</button>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="wordModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h5 id="modalTitle">Add Vocabulary</h5>
+      <button class="modal-close" id="modalCloseBtn">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Word / Phrase <span style="color:var(--danger)">*</span></label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="mWord" placeholder="e.g. ephemeral">
+          <button class="btn btn-outline" id="speakWordBtn" style="flex-shrink:0;" title="Preview"><i class="bi bi-volume-up"></i></button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Pronunciation</label>
+        <input type="text" class="form-control" id="mPron" placeholder="/ɪˈfem.ər.əl/">
+      </div>
+      <div class="form-group">
+        <label class="form-label">中文翻译 Chinese Translation</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="mChinese" placeholder="自动翻译中文…">
+          <button class="btn btn-outline" id="translateChineseBtn" style="flex-shrink:0;" title="Auto-translate to Chinese"><i class="bi bi-translate"></i></button>
+        </div>
+        <div class="fetch-hint" id="translateHint"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Meaning <span style="color:var(--danger)">*</span></label>
+        <div class="input-group">
+          <textarea class="form-control" id="mMeaning" rows="2" placeholder="Definition…"></textarea>
+          <button class="btn btn-outline" id="fetchMeanBtn" style="flex-shrink:0; align-self:flex-start;" title="Auto-fetch"><i class="bi bi-magic"></i></button>
+        </div>
+        <div class="fetch-hint" id="fetchHint"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Context Sentence</label>
+        <textarea class="form-control" id="mContext" rows="2" placeholder="Sentence where you found this word…"></textarea>
+      </div>
+      <input type="hidden" id="mMonth">
+      <input type="hidden" id="mEditId">
+      <input type="hidden" id="mEditMonth">
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" id="modalCancelBtn">Cancel</button>
+      <button class="btn btn-primary" id="saveWordBtn"><i class="bi bi-check-lg"></i> Save Word</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- SCRIPTS -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+/* =============================================================
+   LEXIMASTER  ·  App Logic
+   ============================================================= */
+
+// ── Firebase Init ─────────────────────────────────────────────
+firebase.initializeApp({
+  apiKey: "AIzaSyDcGIFKuwtZdEsimY3aRnbMsjBsQledQ7A",
+  authDomain: "test001-a0103.firebaseapp.com",
+  projectId: "test001-a0103",
+  storageBucket: "test001-a0103.firebasestorage.app",
+  messagingSenderId: "289110826112",
+  appId: "1:289110826112:web:4da4504b5d04014ea0da65",
+  databaseURL: "https://test001-a0103-default-rtdb.asia-southeast1.firebasedatabase.app"
+});
+const db = firebase.database();
+
+// PDF.js runs in fake-worker mode (worker disabled — sandboxed environment).
+// PDF.js runs in fake-worker mode — warnings suppressed inside the PDF handler.
+
+// ── State ─────────────────────────────────────────────────────
+let allVocab     = {};
+let examHistory  = {};
+let savedWordSet = new Set();   // lowercase words already saved
+let selectedChips = new Set();  // words selected in chip view
+let queueWords   = [];          // batch add queue
+let currentWords = [];          // extracted word objects
+let exam         = {};
+let _queueMode   = false;
+
+// ── Utils ─────────────────────────────────────────────────────
+const nowMonth = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; };
+const uid      = () => Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc      = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const escJs    = s => String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+
+function toast(msg, type='ok') {
+  const el = document.createElement('div');
+  el.className = `toast-item toast-${type}`;
+  el.textContent = msg;
+  document.getElementById('toastWrap').appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3200);
+}
+function speak(txt) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang='en-US'; u.rate=0.88;
+  speechSynthesis.speak(u);
+}
+
+// ── Tabs ──────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab===name));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`panel-${name}`).classList.add('active');
+}
+
+// ── Firebase CRUD ─────────────────────────────────────────────
+function fbSave(d) {
+  const month = d.month||nowMonth(), id = d.id||uid();
+  return db.ref(`/vocab/${month}/${id}`).set({
+    word: d.word||'', meaning: d.meaning||'',
+    pronunciation: d.pronunciation||'', context: d.context||'',
+    chinese: d.chinese||'',
+    month, id, createdAt: Date.now()
+  });
+}
+function fbDelete(month, id) { return db.ref(`/vocab/${month}/${id}`).remove(); }
+function fbSaveExam(d)       { const id=uid(); return db.ref(`/examHistory/${id}`).set({...d,id,createdAt:Date.now()}); }
+
+// ── Listeners ─────────────────────────────────────────────────
+db.ref('/vocab').on('value', snap => {
+  allVocab = snap.val()||{};
+  savedWordSet.clear();
+  Object.values(allVocab).forEach(mw => Object.values(mw).forEach(d => savedWordSet.add((d.word||'').toLowerCase())));
+  renderKanban(); updateStats(); updateExamMonths(); refreshFilterDrop(); refreshChipSavedState();
+});
+db.ref('/examHistory').on('value', snap => {
+  examHistory = snap.val()||{};
+  renderHistory();
+  document.getElementById('st-exams').textContent = Object.keys(examHistory).length;
+});
+
+// ── Stats ─────────────────────────────────────────────────────
+function updateStats() {
+  const months=Object.keys(allVocab); let total=0, thisM=0; const cur=nowMonth();
+  months.forEach(m => { const c=Object.keys(allVocab[m]||{}).length; total+=c; if(m===cur) thisM=c; });
+  document.getElementById('st-total').textContent=total;
+  document.getElementById('st-months').textContent=months.length;
+  document.getElementById('st-thismonth').textContent=thisM;
+  document.getElementById('totalNavPill').textContent=`${total} word${total!==1?'s':''}`;
+}
+
+// ── Dictionary API (Claude AI-powered) ───────────────────────
+async function fetchDefinition(word) {
+  try {
+    // Step 1: Get phonetic from free dictionary API (fast, no cost)
+    let phonetic = '';
+    try {
+      const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word.toLowerCase())}`);
+      if (dictRes.ok) {
+        const dictData = await dictRes.json();
+        if (Array.isArray(dictData) && dictData[0]) {
+          phonetic = dictData[0].phonetic || (dictData[0].phonetics||[]).find(p=>p.text)?.text || '';
+        }
+      }
+    } catch {}
+
+    // Step 2: Use Claude AI for definition + example + Chinese translation
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        messages: [{
+          role: 'user',
+          content: `For the English word "${word}", respond with ONLY a JSON object in this exact format (no markdown, no extra text):\n{"definition":"(part of speech) your definition here","example":"your example sentence here","chinese":"\u4e2d\u6587\u7ffb\u8bd1"}\n\nRules:\n- definition: start with part of speech in parentheses e.g. "(noun)", then a clear modern informative definition. Do NOT use the word itself.\n- example: one natural realistic example sentence using the word in context, like Google Translate style (e.g. "the manager had lost his ability to motivate the players").\n- chinese: the most natural and commonly used Chinese translation of the word (just the word/phrase, not a sentence). Use Traditional or Simplified Chinese as appropriate.`
+        }]
+      })
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const raw = data.content?.map(b => b.text||'').join('').trim();
+    if (!raw) return null;
+    const clean = raw.replace(/^```[a-z]*\n?/,'').replace(/\n?```$/,'').trim();
+    const parsed = JSON.parse(clean);
+    return { phonetic, meaning: parsed.definition||'', example: parsed.example||'', chinese: parsed.chinese||'' };
+  } catch { return null; }
+}
+
+// ══════════════════════════════════════════════════════════════
+//   WORD ANALYSIS ENGINE
+// ══════════════════════════════════════════════════════════════
+const STOP_WORDS = new Set([
+  'the','a','an','and','or','but','in','on','at','to','for','of','with','by','from','as',
+  'is','was','are','were','be','been','being','have','has','had','do','does','did','will',
+  'would','could','should','may','might','shall','can','not','no','nor','so','yet','both',
+  'either','neither','each','few','more','most','other','some','such','than','then','that',
+  'this','these','those','it','its','itself','he','she','they','we','you','i','me','him',
+  'her','us','them','my','your','his','our','their','what','which','who','whom','whose',
+  'when','where','why','how','all','any','if','also','just','very','too','so','up','about',
+  'after','before','between','during','through','over','under','again','further','once',
+  'here','there','while','although','because','since','unless','until','though','even',
+  'only','whether','into','upon','among','along','without','within','against','across',
+  'behind','below','above','off','out','down','back','still','now','well','much','many',
+  'same','own','new','last','long','great','little','old','right','big','high','different',
+  'small','large','next','early','young','important','public','private','real','best',
+  'free','able','said','like','just','made','good','know','time','year','way','day','man',
+  'think','see','come','want','look','use','find','give','tell','work','call','go','get',
+  'make','take','let','put','set','then','than','even','also','just','back','after','need',
+  'way','got','say','going','one','two','three','four','five','six','seven','eight','nine',
+  'ten','said','told','went','came','knew','thought','saw','felt','heard','asked','took'
+]);
+
+const EASY_WORDS = new Set([
+  'book','read','write','word','text','page','name','place','thing','part','hand','eye',
+  'head','face','body','life','world','home','house','room','door','water','food','fire',
+  'light','night','week','month','people','person','child','woman','girl','friend','family',
+  'school','team','group','city','road','car','money','number','point','kind','area','case',
+  'side','end','move','turn','start','stop','help','talk','hear','feel','keep','hold','live',
+  'bring','show','play','run','walk','stay','meet','stand','follow','ask','change','try',
+  'mean','learn','lead','grow','open','close','love','hope','plan','mind','idea','view',
+  'fact','true','sure','clear','hard','easy','often','never','always','soon','away','near',
+  'short','white','black','blue','red','green','full','half','whole','first','every','happy',
+  'nice','ready','able','bright','bring','build','catch','carry','clean','count','cover',
+  'cut','describe','draw','dream','drink','drive','drop','eat','enter','fall','flow',
+  'give','hold','jump','keep','kill','know','laugh','leave','listen','lose','love','move',
+  'name','notice','pick','play','point','pull','push','reach','rest','return','rise','sell',
+  'send','show','sing','sleep','smell','smile','sound','speak','spend','spread','stand',
+  'stop','talk','teach','throw','touch','train','travel','treat','turn','wait','watch',
+  'win','wish','wonder','write'
+]);
+
+function countSyllables(w) {
+  w = w.toLowerCase().replace(/[^a-z]/g,'');
+  if (!w) return 1;
+  w = w.replace(/(?:[^laeiouy]es|[^laeiouy]ed|[^laeiouy]e)$/, '');
+  const m = w.match(/[aeiouy]+/g);
+  return Math.max(1, m ? m.length : 1);
+}
+
+function getDifficulty(word) {
+  const w=word.toLowerCase(), len=w.length, syl=countSyllables(w);
+  if (EASY_WORDS.has(w))              return 'easy';
+  if (len<=4 && syl<=2)              return 'easy';
+  if (len<=6 && syl<=2)              return 'easy';
+  if (syl>=4 || len>=11)             return 'hard';
+  if (syl>=3 || len>=8)              return 'normal';
+  return 'normal';
+}
+
+function extractWords(text) {
+  const raw = text.match(/\b[a-zA-Z]{3,}\b/g)||[];
+  const seen=new Set(), out=[];
+  raw.forEach(w => {
+    const lc=w.toLowerCase();
+    if (!seen.has(lc) && !STOP_WORDS.has(lc)) {
+      seen.add(lc);
+      out.push({ original: w, lower: lc, diff: getDifficulty(lc) });
+    }
+  });
+  return out.sort((a,b)=>a.lower.localeCompare(b.lower));
+}
+
+// ── Analyse button ────────────────────────────────────────────
+document.getElementById('analyseBtn').addEventListener('click', () => {
+  const txt = document.getElementById('textInput').value.trim();
+  if (!txt) { toast('Please paste some text first','err'); return; }
+  currentWords = extractWords(txt);
+  if (!currentWords.length) { toast('No vocabulary words found','err'); return; }
+  selectedChips.clear();
+  renderChips();
+  document.getElementById('chipsOutput').style.display = 'block';
+  document.getElementById('readPlaceholder').style.display = 'none';
+  updateSelBar();
+});
+
+// ── PDF ───────────────────────────────────────────────────────
+document.getElementById('pdfUpload').addEventListener('change', async e => {
+  const file=e.target.files[0]; if(!file) return;
+  const status=document.getElementById('pdfStatus');
+  status.innerHTML='<span class="spin"></span> Extracting PDF…';
+
+  // Silence ALL console output for the duration of the PDF.js call.
+  // PDF.js captures console references at init time so pre-load patches
+  // don't reach its internal warn() calls — wrapping the operation is the
+  // only reliable way to suppress the flood of worker/font warnings.
+  const _cw = console.warn, _ce = console.error, _cl = console.log;
+  console.warn = console.error = console.log = () => {};
+
+  try {
+    const buf=await file.arrayBuffer();
+    const pdf=await pdfjsLib.getDocument({data:buf}).promise;
+    let full='';
+    for(let i=1;i<=pdf.numPages;i++){
+      const page=await pdf.getPage(i);
+      const tc=await page.getTextContent();
+      full+=tc.items.map(it=>it.str).join(' ')+'\n\n';
+    }
+    document.getElementById('textInput').value=full;
+    status.innerHTML=`<span style="color:var(--success)"><i class="bi bi-check-circle"></i> ${pdf.numPages} pages extracted — click Analyse</span>`;
+  } catch(err) {
+    status.innerHTML=`<span style="color:var(--danger)"><i class="bi bi-x-circle"></i> ${esc(err.message)}</span>`;
+  } finally {
+    // Always restore console so app warnings remain visible
+    console.warn = _cw; console.error = _ce; console.log = _cl;
+  }
+  e.target.value='';
+});
+
+// ── Render chips ──────────────────────────────────────────────
+function renderChips() {
+  const hideKnown = document.getElementById('hideKnownChk').checked;
+  const groups = { hard:[], normal:[], easy:[] };
+
+  currentWords.forEach(w => {
+    if (hideKnown && savedWordSet.has(w.lower)) return;
+    groups[w.diff].push(w);
+  });
+
+  ['hard','normal','easy'].forEach(diff => {
+    const grid=document.getElementById(`grid-${diff}`);
+    const cnt=document.getElementById(`cnt-${diff}`);
+    grid.innerHTML='';
+    cnt.textContent=groups[diff].length;
+
+    groups[diff].forEach(w => {
+      const chip=document.createElement('span');
+      chip.className=`chip ${diff}`;
+      chip.dataset.word=w.lower;
+      chip.dataset.diff=diff;
+      chip.textContent=w.original;
+
+      const isSaved=savedWordSet.has(w.lower);
+      if (isSaved) { chip.classList.add('saved'); chip.title='Already in vocabulary'; }
+      if (selectedChips.has(w.lower)) chip.classList.add('selected');
+
+      chip.addEventListener('click', () => {
+        if (chip.classList.contains('saved')) return;
+        toggleChip(chip, w.lower);
+      });
+      grid.appendChild(chip);
+    });
+  });
+
+  // Summary
+  const total=currentWords.length;
+  const saved=currentWords.filter(w=>savedWordSet.has(w.lower)).length;
+  document.getElementById('summaryPills').innerHTML=`
+    <div class="summary-pill hard">🔴 ${groups.hard.length} hard</div>
+    <div class="summary-pill normal">🟡 ${groups.normal.length} normal</div>
+    <div class="summary-pill easy">🟢 ${groups.easy.length} easy</div>
+    <span style="font-size:0.79rem;color:var(--muted);align-self:center;">${total} unique words · ${saved} already saved</span>`;
+}
+
+function refreshChipSavedState() {
+  if (!currentWords.length) return;
+  document.querySelectorAll('.chip').forEach(chip => {
+    const isSaved=savedWordSet.has(chip.dataset.word);
+    chip.classList.toggle('saved', isSaved);
+    if (isSaved) { chip.classList.remove('selected'); chip.title='Already in vocabulary'; }
+  });
+  selectedChips.forEach(w => { if(savedWordSet.has(w)) selectedChips.delete(w); });
+  // Update summary saved count
+  const saved=currentWords.filter(w=>savedWordSet.has(w.lower)).length;
+  const pills=document.getElementById('summaryPills');
+  const lastSpan=pills.querySelector('span');
+  if (lastSpan) lastSpan.textContent=`${currentWords.length} unique words · ${saved} already saved`;
+  updateSelBar();
+}
+
+function toggleChip(chip, wordLc) {
+  if (selectedChips.has(wordLc)) { selectedChips.delete(wordLc); chip.classList.remove('selected'); }
+  else { selectedChips.add(wordLc); chip.classList.add('selected'); }
+  updateSelBar();
+}
+
+function updateSelBar() {
+  const n=selectedChips.size;
+  document.getElementById('selBarCount').textContent=`${n} word${n!==1?'s':''} selected`;
+  document.getElementById('clearSelBtn').style.display=n?'inline-flex':'none';
+  document.getElementById('selBar').classList.toggle('visible', n>0);
+}
+
+function clearSel() {
+  selectedChips.clear();
+  document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+  updateSelBar();
+}
+
+// Select all hard / normal
+document.getElementById('selAllHardBtn').addEventListener('click', () => {
+  document.querySelectorAll('#grid-hard .chip:not(.saved)').forEach(c=>{selectedChips.add(c.dataset.word);c.classList.add('selected');});
+  updateSelBar();
+});
+document.getElementById('selAllNormBtn').addEventListener('click', () => {
+  document.querySelectorAll('#grid-normal .chip:not(.saved)').forEach(c=>{selectedChips.add(c.dataset.word);c.classList.add('selected');});
+  updateSelBar();
+});
+document.getElementById('clearSelBtn').addEventListener('click', clearSel);
+document.getElementById('clearSelBarBtn').addEventListener('click', clearSel);
+document.getElementById('hideKnownChk').addEventListener('change', () => { if(currentWords.length) renderChips(); });
+
+// Collapse sections
+document.querySelectorAll('.diff-header').forEach(hdr => {
+  hdr.addEventListener('click', () => {
+    const body=document.getElementById(hdr.dataset.target);
+    const collapsed=hdr.classList.toggle('collapsed');
+    body.classList.toggle('hidden', collapsed);
+  });
+});
+
+// ── Add Selected ──────────────────────────────────────────────
+document.getElementById('addSelBtn').addEventListener('click', () => {
+  if (!selectedChips.size) return;
+  queueWords=[...selectedChips].map(lc=>{
+    const w=currentWords.find(x=>x.lower===lc);
+    return { word: w?w.original:lc };
+  });
+  openNextInQueue();
+});
+
+function openNextInQueue() {
+  if (!queueWords.length) { clearSel(); toast('All words saved!','ok'); return; }
+  const { word } = queueWords[0];
+  openAddModal(word, '', true);
+}
+
+// ══════════════════════════════════════════════════════════════
+//   MODAL
+// ══════════════════════════════════════════════════════════════
+const modalOverlay=document.getElementById('wordModal');
+function openModal()  { modalOverlay.classList.add('open'); }
+
+function closeModal() {
+  modalOverlay.classList.remove('open');
+  if (_queueMode) {
+    queueWords.shift();
+    _queueMode=false;
+    if (queueWords.length) setTimeout(openNextInQueue, 220);
+    else clearSel();
+  }
+}
+
+document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', e => { if(e.target===modalOverlay) closeModal(); });
+
+function openAddModal(word='', ctx='', queueMode=false) {
+  _queueMode=queueMode;
+  const remaining=queueWords.length;
+  document.getElementById('modalTitle').textContent = remaining>1 ? `Add Vocabulary (${remaining} remaining)` : 'Add Vocabulary';
+  document.getElementById('mWord').value=word;
+  document.getElementById('mPron').value='';
+  document.getElementById('mMeaning').value='';
+  document.getElementById('mContext').value=ctx;
+  document.getElementById('mChinese').value='';
+  document.getElementById('mMonth').value=nowMonth();
+  document.getElementById('mEditId').value='';
+  document.getElementById('mEditMonth').value='';
+  document.getElementById('fetchHint').textContent='';
+  document.getElementById('translateHint').textContent='';
+  openModal();
+  if (word) autoFetch(word);
+}
+
+function openEditModal(month, id) {
+  _queueMode=false;
+  const data=allVocab[month]?.[id]; if(!data) return;
+  document.getElementById('modalTitle').textContent='Edit Vocabulary';
+  document.getElementById('mWord').value=data.word||'';
+  document.getElementById('mPron').value=data.pronunciation||'';
+  document.getElementById('mMeaning').value=data.meaning||'';
+  document.getElementById('mContext').value=data.context||'';
+  document.getElementById('mChinese').value=data.chinese||'';
+  document.getElementById('mMonth').value=data.month||nowMonth();
+  document.getElementById('mEditId').value=id;
+  document.getElementById('mEditMonth').value=month;
+  document.getElementById('fetchHint').textContent='';
+  document.getElementById('translateHint').textContent='';
+  openModal();
+}
+
+async function autoFetch(word) {
+  const hint=document.getElementById('fetchHint');
+  hint.innerHTML='<span class="spin" style="border-color:var(--gold-dk);border-right-color:transparent;"></span> Fetching meaning, example & translation…';
+  const result=await fetchDefinition(word);
+  if (result) {
+    if (!document.getElementById('mMeaning').value) document.getElementById('mMeaning').value=result.meaning;
+    if (!document.getElementById('mPron').value&&result.phonetic) document.getElementById('mPron').value=result.phonetic;
+    if (!document.getElementById('mContext').value&&result.example) document.getElementById('mContext').value=result.example;
+    if (!document.getElementById('mChinese').value&&result.chinese) document.getElementById('mChinese').value=result.chinese;
+    hint.innerHTML='<span style="color:var(--success)">✓ Meaning, example & Chinese translation fetched</span>';
+  } else {
+    hint.innerHTML='<span style="color:var(--muted-lt)">Could not auto-fetch — enter manually</span>';
+  }
+}
+
+document.getElementById('fetchMeanBtn').addEventListener('click', () => { const w=document.getElementById('mWord').value.trim(); if(w) autoFetch(w); else toast('Enter a word first','err'); });
+document.getElementById('translateChineseBtn').addEventListener('click', async () => {
+  const w=document.getElementById('mWord').value.trim();
+  if (!w) { toast('Enter a word first','err'); return; }
+  const hint=document.getElementById('translateHint');
+  hint.innerHTML='<span class="spin" style="border-color:var(--gold-dk);border-right-color:transparent;"></span> Translating…';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:100,
+        messages:[{ role:'user', content:`Translate the English word or phrase "${w}" to Chinese. Respond with ONLY the Chinese translation (the most natural and common form), nothing else.` }]
+      })
+    });
+    const data = await res.json();
+    const zh = data.content?.map(b=>b.text||'').join('').trim();
+    if (zh) { document.getElementById('mChinese').value=zh; hint.innerHTML='<span style="color:var(--success)">✓ Translated</span>'; }
+    else hint.innerHTML='<span style="color:var(--muted-lt)">Translation failed</span>';
+  } catch { hint.innerHTML='<span style="color:var(--muted-lt)">Translation failed</span>'; }
+});
+document.getElementById('speakWordBtn').addEventListener('click', () => { const w=document.getElementById('mWord').value.trim(); if(w) speak(w); });
+
+document.getElementById('saveWordBtn').addEventListener('click', async () => {
+  const word=document.getElementById('mWord').value.trim();
+  const meaning=document.getElementById('mMeaning').value.trim();
+  if (!word||!meaning) { toast('Word and meaning are required','err'); return; }
+
+  const btn=document.getElementById('saveWordBtn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Saving…';
+  try {
+    const pron=document.getElementById('mPron').value.trim();
+    const ctx=document.getElementById('mContext').value.trim();
+    const chinese=document.getElementById('mChinese').value.trim();
+    const month=document.getElementById('mMonth').value||nowMonth();
+    const editId=document.getElementById('mEditId').value;
+    const editMon=document.getElementById('mEditMonth').value;
+
+    if (editId&&editMon&&editMon!==month) await fbDelete(editMon,editId);
+    await fbSave({id:editId||undefined,word,meaning,pronunciation:pron,context:ctx,chinese,month});
+
+    if (_queueMode) {
+      queueWords.shift();
+      modalOverlay.classList.remove('open');
+      _queueMode=false;
+      toast(`"${word}" saved!`,'ok');
+      if (queueWords.length) setTimeout(openNextInQueue,260);
+      else clearSel();
+    } else {
+      modalOverlay.classList.remove('open');
+      toast(editId?`"${word}" updated!`:`"${word}" saved!`,'ok');
+    }
+  } catch(e) { toast('Save failed: '+e.message,'err'); }
+  btn.disabled=false; btn.innerHTML='<i class="bi bi-check-lg"></i> Save Word';
+});
+
+document.getElementById('addManualBtn').addEventListener('click', () => openAddModal());
+
+// Refresh / Reset button — Read & Learn
+document.getElementById('refreshReadBtn').addEventListener('click', () => {
+  document.getElementById('textInput').value='';
+  document.getElementById('pdfStatus').textContent='';
+  document.getElementById('chipsOutput').style.display='none';
+  document.getElementById('readPlaceholder').style.display='block';
+  currentWords=[];
+  selectedChips.clear();
+  updateSelBar();
+  ['hard','normal','easy'].forEach(d=>{
+    document.getElementById('grid-'+d).innerHTML='';
+    document.getElementById('cnt-'+d).textContent='0';
+  });
+  document.getElementById('summaryPills').innerHTML='';
+  toast('Cleared — paste new text to start again','ok');
+});
+
+// Give Up button — Exam
+document.getElementById('giveUpBtn').addEventListener('click', () => {
+  // Mark remaining questions as skipped (wrong)
+  const remaining = exam.questions.slice(exam.cur);
+  remaining.forEach(q => {
+    exam.wrong++;
+    exam.answers.push({prompt:q.prompt, selected:'(skipped)', correct:q.answer, isCorrect:false});
+  });
+  exam.cur = exam.questions.length;
+  showResults();
+});
+
+// ══════════════════════════════════════════════════════════════
+//   VOCABULARY BOARD (month sections, cards wrap left→right)
+// ══════════════════════════════════════════════════════════════
+// Store pending delete state for inline confirm
+let _pendingDel = null;
+
+// Multi-select state
+let vsSelectMode = false;
+let vsSelected   = new Set(); // "month|id" keys
+let vsCollapsed  = new Set(); // collapsed month keys
+
+function applyVsMode() {
+  document.querySelectorAll('.vcard').forEach(card => {
+    card.classList.toggle('vs-select-mode', vsSelectMode);
+  });
+  document.querySelectorAll('.vocab-section-head').forEach(h => {
+    h.classList.toggle('vs-select-mode', vsSelectMode);
+  });
+}
+
+function syncSectionCb(month) {
+  const sec = document.querySelector(`.vocab-section[data-month="${month}"]`);
+  if (!sec) return;
+  const cards = sec.querySelectorAll('.vcard');
+  const secCb = sec.querySelector('.vs-section-cb');
+  if (!secCb) return;
+  const allChecked = [...cards].every(c => vsSelected.has(c.dataset.month+'|'+c.dataset.id));
+  secCb.checked = allChecked && cards.length > 0;
+}
+
+function updateVsDelBar() {
+  const n = vsSelected.size;
+  document.getElementById('vocabDelBarCount').textContent = `${n} word${n!==1?'s':''} selected`;
+  document.getElementById('vocabDelBar').classList.toggle('visible', vsSelectMode && n > 0);
+}
+
+// Select mode toggle button
+document.getElementById('vsSelectModeBtn').addEventListener('click', () => {
+  vsSelectMode = !vsSelectMode;
+  const btn = document.getElementById('vsSelectModeBtn');
+  btn.classList.toggle('active', vsSelectMode);
+  btn.innerHTML = vsSelectMode
+    ? '<i class="bi bi-x-lg"></i> Cancel'
+    : '<i class="bi bi-check2-square"></i> Select';
+  if (!vsSelectMode) {
+    vsSelected.clear();
+    document.getElementById('vocabDelBar').classList.remove('visible');
+  }
+  applyVsMode();
+  updateVsDelBar();
+});
+
+// Confirm bulk delete
+document.getElementById('vocabDelConfirmBtn').addEventListener('click', async () => {
+  if (!vsSelected.size) return;
+  const count = vsSelected.size;
+  const entries = [...vsSelected].map(k => { const [m,i] = k.split('|'); return {m,i}; });
+  try {
+    await Promise.all(entries.map(({m,i}) => fbDelete(m,i)));
+    vsSelected.clear();
+    vsSelectMode = false;
+    const btn = document.getElementById('vsSelectModeBtn');
+    btn.classList.remove('active');
+    btn.innerHTML = '<i class="bi bi-check2-square"></i> Select';
+    document.getElementById('vocabDelBar').classList.remove('visible');
+    toast(`${count} word${count!==1?'s':''} deleted`, 'ok');
+  } catch(e) { toast('Delete failed: '+e.message,'err'); }
+});
+
+// Cancel multi-select
+document.getElementById('vocabDelCancelBtn').addEventListener('click', () => {
+  vsSelectMode = false; vsSelected.clear();
+  const btn = document.getElementById('vsSelectModeBtn');
+  btn.classList.remove('active');
+  btn.innerHTML = '<i class="bi bi-check2-square"></i> Select';
+  document.getElementById('vocabDelBar').classList.remove('visible');
+  applyVsMode();
+});
+
+function renderKanban() {
+  const board=document.getElementById('kanbanBoard');
+  const search=document.getElementById('searchInput').value.toLowerCase().trim();
+  const fMonth=document.getElementById('filterMonthSel').value;
+
+  let months=Object.keys(allVocab).sort().reverse();
+  if(fMonth) months=months.filter(m=>m===fMonth);
+
+  const dupMap={};
+  Object.values(allVocab).forEach(mw=>Object.values(mw).forEach(d=>{const k=(d.word||'').toLowerCase();dupMap[k]=(dupMap[k]||0)+1;}));
+
+  const sections=[];
+  months.forEach(m=>{
+    let entries=Object.entries(allVocab[m]||{});
+    if(search) entries=entries.filter(([,d])=>(d.word||'').toLowerCase().includes(search)||(d.meaning||'').toLowerCase().includes(search));
+    if(!entries.length) return;
+    entries.sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+    sections.push({month:m,entries});
+  });
+
+  if(!sections.length){
+    board.innerHTML=`<div class="empty-state"><i class="bi bi-collection"></i><p>${search?'No results for "'+esc(search)+'"':'No vocabulary yet. Use Read &amp; Learn to add words!'}</p></div>`;
+    return;
+  }
+
+  board.innerHTML='';
+  sections.forEach(({month,entries})=>{
+    const sec=document.createElement('div'); sec.className='vocab-section';
+    sec.dataset.month=month;
+    const head=document.createElement('div'); head.className='vocab-section-head';
+    const isCollapsed = vsCollapsed.has(month);
+
+    head.innerHTML=`
+      <input type="checkbox" class="vs-section-cb" data-month="${esc(month)}" title="Select all in ${esc(month)}">
+      <span class="vocab-section-month"><i class="bi bi-calendar3" style="font-size:0.82rem;margin-right:0.4rem;opacity:.7;"></i>${esc(month)}</span>
+      <span class="vocab-section-count">${entries.length} word${entries.length!==1?'s':''}</span>
+      <button class="vocab-section-toggle" data-month="${esc(month)}" title="${isCollapsed?'Show':'Hide'} words">
+        <i class="bi bi-chevron-${isCollapsed?'down':'up'}"></i>
+      </button>`;
+    sec.appendChild(head);
+
+    const grid=document.createElement('div'); grid.className='vocab-cards-grid'+(isCollapsed?' hidden':'');
+    entries.forEach(([id,data])=>grid.appendChild(buildVCard(id,data,month,dupMap[(data.word||'').toLowerCase()]>1)));
+    sec.appendChild(grid);
+    board.appendChild(sec);
+
+    // Section collapse toggle
+    head.querySelector('.vocab-section-toggle').addEventListener('click', e => {
+      e.stopPropagation();
+      const btn = e.currentTarget;
+      const mon = btn.dataset.month;
+      const g = sec.querySelector('.vocab-cards-grid');
+      const nowCollapsed = g.classList.toggle('hidden');
+      if (nowCollapsed) vsCollapsed.add(mon); else vsCollapsed.delete(mon);
+      btn.innerHTML = `<i class="bi bi-chevron-${nowCollapsed?'down':'up'}"></i>`;
+      btn.title = (nowCollapsed ? 'Show' : 'Hide') + ' words';
+    });
+
+    // Section checkbox (select all in section)
+    const secCb = head.querySelector('.vs-section-cb');
+    secCb.addEventListener('change', () => {
+      grid.querySelectorAll('.vcard').forEach(card => {
+        const key = card.dataset.month+'|'+card.dataset.id;
+        if (secCb.checked) { vsSelected.add(key); card.classList.add('vs-checked'); }
+        else { vsSelected.delete(key); card.classList.remove('vs-checked'); }
+        card.querySelector('.vcard-cb').checked = secCb.checked;
+      });
+      updateVsDelBar();
+    });
+  });
+
+  // Apply select mode styling after render
+  applyVsMode();
+}
+
+function buildVCard(id,data,month,isDup){
+  const card=document.createElement('div');
+  card.className='vcard';
+  card.dataset.id=id; card.dataset.month=month; card.dataset.word=data.word||'';
+  const ctx=(data.context||'').slice(0,110)+((data.context||'').length>110?'…':'');
+  const key = month+'|'+id;
+  card.innerHTML=`
+    <input type="checkbox" class="vcard-cb" title="Select">
+    <div class="vcard-word">
+      ${esc(data.word||'')}
+
+      ${isDup?'<span class="badge-dup">duplicate</span>':''}
+    </div>
+    <div class="vcard-pron-row">
+      ${data.pronunciation?`<span class="vcard-pron">${esc(data.pronunciation)}</span>`:''}
+      ${data.chinese?`<span class="vcard-chinese"><i class="bi bi-translate" style="font-size:0.68rem;opacity:0.55;margin-right:0.2rem;"></i>${esc(data.chinese)}</span>`:''}
+    </div>
+    <div class="vcard-meaning">${esc(data.meaning||'')}</div>
+    ${ctx?`<div class="vcard-ctx">${esc(ctx)}</div>`:''}
+    <div class="vcard-actions">
+      <button class="btn-icon speak"   data-action="speak"  title="Pronounce"><i class="bi bi-volume-up"></i></button>
+      <button class="btn-icon edit"    data-action="edit"   title="Edit"><i class="bi bi-pencil"></i></button>
+      <button class="btn-icon delete"  data-action="delete" title="Delete"><i class="bi bi-trash"></i></button>
+    </div>
+    <div class="del-confirm" style="display:none; position:absolute; inset:0; background:rgba(255,245,245,0.97); border-radius:var(--radius-sm); display:none; align-items:center; justify-content:center; flex-direction:column; gap:0.5rem; padding:0.75rem; text-align:center; z-index:10;">
+      <span style="font-size:0.82rem; font-weight:600; color:var(--danger);">Delete "<em>${esc(data.word||'')}</em>"?</span>
+      <div style="display:flex; gap:0.5rem;">
+        <button class="btn btn-sm" data-action="confirm-delete" style="background:var(--danger);color:white;border:none;">Yes, delete</button>
+        <button class="btn btn-sm btn-outline" data-action="cancel-delete">Cancel</button>
+      </div>
+    </div>`;
+
+  // Checkbox toggle
+  const cb = card.querySelector('.vcard-cb');
+  cb.checked = vsSelected.has(key);
+  if (vsSelected.has(key)) card.classList.add('vs-checked');
+  cb.addEventListener('change', e => {
+    e.stopPropagation();
+    if (cb.checked) { vsSelected.add(key); card.classList.add('vs-checked'); }
+    else { vsSelected.delete(key); card.classList.remove('vs-checked'); }
+    syncSectionCb(month);
+    updateVsDelBar();
+  });
+
+  // Card click in select mode = toggle checkbox
+  card.addEventListener('click', e => {
+    if (vsSelectMode && !e.target.closest('[data-action]') && e.target !== cb) {
+      cb.checked = !cb.checked;
+      cb.dispatchEvent(new Event('change'));
+      return;
+    }
+    const action = e.target.closest('[data-action]')?.dataset.action;
+    if (!action) return;
+    e.stopPropagation();
+    const w=card.dataset.word, m=card.dataset.month, i=card.dataset.id;
+    const delPanel=card.querySelector('.del-confirm');
+    if (action==='speak')          { speak(w); }
+    else if (action==='edit')      { openEditModal(m,i); }
+    else if (action==='delete')    { delPanel.style.display='flex'; }
+    else if (action==='cancel-delete') { delPanel.style.display='none'; }
+    else if (action==='confirm-delete'){
+      fbDelete(m,i)
+        .then(()=>toast(`"${w}" deleted`,'ok'))
+        .catch(err=>toast('Delete failed: '+err.message,'err'));
+    }
+  });
+  return card;
+}
+
+function delWord(month,id,word){ /* kept for compatibility — uses new inline confirm */ }
+
+document.getElementById('searchInput').addEventListener('input', renderKanban);
+document.getElementById('filterMonthSel').addEventListener('change', renderKanban);
+document.getElementById('clearFiltersBtn').addEventListener('click',()=>{
+  document.getElementById('searchInput').value='';
+  document.getElementById('filterMonthSel').value='';
+  renderKanban();
+});
+
+function refreshFilterDrop(){
+  const months=Object.keys(allVocab).sort().reverse();
+  const sel=document.getElementById('filterMonthSel'); const cur=sel.value;
+  sel.innerHTML='<option value="">All Months</option>';
+  months.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;if(m===cur)o.selected=true;sel.appendChild(o);});
+}
+
+// ══════════════════════════════════════════════════════════════
+//   EXAM
+// ══════════════════════════════════════════════════════════════
+function updateExamMonths(){
+  const months=Object.keys(allVocab).sort().reverse();
+  const grid=document.getElementById('monthCheckGrid');
+  if(!months.length){grid.innerHTML='<span style="color:var(--muted);font-size:0.85rem;">Save vocabulary first.</span>';return;}
+  grid.innerHTML='';
+  months.forEach((m,i)=>{
+    const cnt=Object.keys(allVocab[m]||{}).length;
+    const id=`mchk-${m}`;
+    const lbl=document.createElement('label');
+    lbl.className='month-check-label'+(i===0?' checked':'');
+    lbl.htmlFor=id;
+    lbl.innerHTML=`<input type="checkbox" id="${id}" value="${esc(m)}" ${i===0?'checked':''}>${esc(m)} <span style="opacity:.5">(${cnt})</span>`;
+    lbl.querySelector('input').addEventListener('change',function(){lbl.classList.toggle('checked',this.checked);});
+    grid.appendChild(lbl);
+  });
+}
+
+document.getElementById('startExamBtn').addEventListener('click',()=>{
+  const checked=[...document.querySelectorAll('#monthCheckGrid input:checked')].map(c=>c.value);
+  if(!checked.length){toast('Select at least one month','err');return;}
+  let pool=[];
+  checked.forEach(m=>Object.entries(allVocab[m]||{}).forEach(([id,d])=>{if(d.word&&d.meaning) pool.push({...d,id,month:m});}));
+  if(pool.length<4){toast('Need at least 4 words','err');return;}
+  const count=Math.min(parseInt(document.getElementById('qCountInput').value)||10,pool.length);
+  const style=document.getElementById('qTypeSelect').value;
+  exam={questions:genQuestions(pool,count,style),cur:0,correct:0,wrong:0,answers:[],months:checked,startTime:Date.now()};
+  document.getElementById('examSetup').style.display='none';
+  document.getElementById('examInProgress').style.display='block';
+  document.getElementById('examResults').style.display='none';
+  showQ(0);
+});
+
+function genQuestions(pool,count,style){
+  return [...pool].sort(()=>Math.random()-.5).slice(0,count).map(item=>{
+    const qt=style==='mixed'?(Math.random()>.5?'meaning':'word'):style;
+    const dist=pool.filter(p=>p.id!==item.id).sort(()=>Math.random()-.5).slice(0,3);
+    if(qt==='meaning'){
+      const opts=[{text:item.meaning,chinese:item.chinese||'',correct:true},...dist.map(d=>({text:d.meaning,chinese:d.chinese||'',correct:false}))].sort(()=>Math.random()-.5);
+      return {type:'meaning',prompt:item.word,pron:item.pronunciation||'',opts,answer:item.meaning};
+    } else {
+      const opts=[{text:item.word,correct:true},...dist.map(d=>({text:d.word,correct:false}))].sort(()=>Math.random()-.5);
+      return {type:'word',prompt:item.meaning,chinese:item.chinese||'',pron:'',opts,answer:item.word};
+    }
+  });
+}
+
+function showQ(idx){
+  const q=exam.questions[idx],total=exam.questions.length;
+  document.getElementById('examCounter').textContent=`Question ${idx+1} of ${total}`;
+  document.getElementById('examScoreDisp').innerHTML=`✓ ${exam.correct} &nbsp; ✗ ${exam.wrong}`;
+  document.getElementById('examBar').style.width=`${(idx/total)*100}%`;
+  document.getElementById('qTypeLabel').textContent=q.type==='meaning'?'What is the meaning of:':'Which word means:';
+  const qt=document.getElementById('qText');
+  if(q.type==='meaning'){
+    qt.innerHTML=`${esc(q.prompt)}${q.pron?` <small style="font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--muted);font-weight:normal;">${esc(q.pron)}</small>`:''} <button onclick="speak('${escJs(q.prompt)}')" style="background:none;border:none;cursor:pointer;color:var(--info);font-size:1rem;vertical-align:middle;"><i class="bi bi-volume-up"></i></button>`;
+  } else {
+    qt.innerHTML=`<em style="font-family:'DM Sans',sans-serif;font-size:1.05rem;font-style:italic;color:var(--muted);">"${esc(q.prompt)}"</em>${q.chinese?`<div style="font-size:0.88rem;color:var(--info);margin-top:0.35rem;font-style:normal;"><i class="bi bi-translate" style="font-size:0.75rem;opacity:0.6;margin-right:0.25rem;"></i>${esc(q.chinese)}</div>`:''}`;
+  }
+  const opts=document.getElementById('qOptions'); opts.innerHTML='';
+  ['A','B','C','D'].forEach((l,i)=>{
+    const div=document.createElement('div'); div.className='opt-item';
+    const opt=q.opts[i];
+    const chineseHint = (q.type==='word' && opt.chinese) ? `<div style="font-size:0.78rem;color:var(--info);margin-top:0.18rem;opacity:0.8;"><i class="bi bi-translate" style="font-size:0.68rem;margin-right:0.2rem;"></i>${esc(opt.chinese)}</div>` : '';
+    div.innerHTML=`<span class="opt-letter">${l}</span><span>${esc(opt.text)}${chineseHint}</span>`;
+    div.addEventListener('click',()=>pickAns(div,opt,q,opts));
+    opts.appendChild(div);
+  });
+}
+
+function pickAns(el,opt,question,container){
+  container.querySelectorAll('.opt-item').forEach(o=>o.style.pointerEvents='none');
+  el.classList.add(opt.correct?'correct':'wrong');
+  if(!opt.correct) container.querySelectorAll('.opt-item').forEach((o,i)=>{if(question.opts[i]?.correct) o.classList.add('correct');});
+  exam.answers.push({prompt:question.prompt,selected:opt.text,correct:question.answer,isCorrect:opt.correct});
+  if(opt.correct) exam.correct++; else exam.wrong++;
+  setTimeout(()=>{exam.cur++;exam.cur<exam.questions.length?showQ(exam.cur):showResults();},1300);
+}
+
+function showResults(){
+  document.getElementById('examInProgress').style.display='none';
+  document.getElementById('examResults').style.display='block';
+  const total=exam.questions.length,cor=exam.correct,pct=Math.round((cor/total)*100);
+  document.getElementById('resEmoji').textContent=pct>=80?'🎉':pct>=60?'😊':pct>=40?'🤔':'😅';
+  document.getElementById('resPct').textContent=pct+'%';
+  document.getElementById('resPct').style.color=pct>=80?'var(--success)':pct>=50?'var(--warn)':'var(--danger)';
+  document.getElementById('resCorrect').textContent=cor;
+  document.getElementById('resWrong').textContent=exam.wrong;
+  document.getElementById('resTotal').textContent=total;
+  document.getElementById('resDateStr').textContent=new Date().toLocaleString();
+  const rv=document.getElementById('reviewList'); rv.innerHTML='';
+  exam.answers.forEach(a=>{
+    const d=document.createElement('div'); d.className='review-item';
+    d.innerHTML=`<span style="font-size:1rem;">${a.isCorrect?'✅':'❌'}</span><div>
+      <div style="font-weight:600;">${esc(a.prompt)}</div>
+      ${!a.isCorrect?`<div style="font-size:0.8rem;color:var(--danger);">Yours: ${esc(a.selected)}</div><div style="font-size:0.8rem;color:var(--success);">Correct: ${esc(a.correct)}</div>`:''}
+    </div>`;
+    rv.appendChild(d);
+  });
+  fbSaveExam({score:cor,total,percent:pct,wrong:exam.wrong,months:exam.months,duration:Math.round((Date.now()-exam.startTime)/1000)});
+}
+
+document.getElementById('retakeBtn').addEventListener('click',()=>{document.getElementById('examResults').style.display='none';document.getElementById('examSetup').style.display='block';});
+document.getElementById('goVocabBtn').addEventListener('click',()=>{document.getElementById('examResults').style.display='none';document.getElementById('examSetup').style.display='block';switchTab('vocab');});
+
+// ── History ───────────────────────────────────────────────────
+document.getElementById('resetHistoryBtn').addEventListener('click', async () => {
+  if (!Object.keys(examHistory).length) { toast('No history to reset','err'); return; }
+  const btn = document.getElementById('resetHistoryBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>';
+  try {
+    await db.ref('/examHistory').remove();
+    toast('Exam history cleared', 'ok');
+  } catch(e) {
+    toast('Reset failed: ' + e.message, 'err');
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="bi bi-trash"></i> Reset All';
+});
+
+function renderHistory(){
+  const list=document.getElementById('historyList');
+  const items=Object.values(examHistory).sort((a,b)=>b.createdAt-a.createdAt);
+  if(!items.length){list.innerHTML=`<div class="empty-state"><i class="bi bi-clock-history"></i><p>No exams taken yet.</p></div>`;return;}
+  list.innerHTML='';
+  items.forEach(ex=>{
+    const cls=ex.percent>=80?'score-hi':ex.percent>=50?'score-mid':'score-lo';
+    const d=document.createElement('div'); d.className='hist-item';
+    d.innerHTML=`<div>
+      <div style="font-weight:600;font-size:0.88rem;">${new Date(ex.createdAt).toLocaleString()}</div>
+      <div class="hist-meta">Months: ${(ex.months||[]).map(esc).join(', ')} · ${ex.score}/${ex.total} correct · ${ex.duration||'?'}s</div>
+    </div><div class="score-badge ${cls}">${ex.percent}%</div>`;
+    list.appendChild(d);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+//   ESSAY & GRAMMAR CHECK
+// ══════════════════════════════════════════════════════════════
+let essayState = { category: '', level: '', title: '', text: '' };
+
+// Category selection
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    essayState.category = btn.dataset.cat;
+    // Show level picker; keep Start disabled until level is also chosen
+    document.getElementById('levelPicker').classList.add('visible');
+    document.getElementById('essayCatStatus').textContent =
+      essayState.level ? `${btn.dataset.cat} · ${essayState.level}` : 'Now choose a difficulty level';
+    updateEssayStartBtn();
+  });
+});
+
+// Level selection
+document.querySelectorAll('.level-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    essayState.level = card.dataset.level;
+    document.getElementById('essayCatStatus').textContent =
+      essayState.category ? `${essayState.category} · ${essayState.level}` : 'Also select a category';
+    updateEssayStartBtn();
+  });
+});
+
+function updateEssayStartBtn() {
+  const ready = essayState.category && essayState.level;
+  document.getElementById('essayStartBtn').disabled = !ready;
+  if (ready) document.getElementById('essayCatStatus').textContent = `✓ ${essayState.category} · ${essayState.level} — ready!`;
+}
+
+// Start → generate title via API
+document.getElementById('essayStartBtn').addEventListener('click', async () => {
+  if (!essayState.category) return;
+  const btn = document.getElementById('essayStartBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Getting title…';
+
+  try {
+    const title = await generateEssayTitle(essayState.category, essayState.level);
+    essayState.title = title;
+    document.getElementById('essayTitleDisplay').textContent = title;
+    document.getElementById('essayCatLabel').textContent = essayState.category;
+    const lvlBadge = document.getElementById('essayLevelBadge');
+    const lvlMap = { easy:'🟢 Easy', medium:'🟡 Medium', hard:'🔴 Hard' };
+    lvlBadge.textContent = lvlMap[essayState.level] || essayState.level;
+    lvlBadge.className = `level-badge ${essayState.level}`;
+    document.getElementById('essayTextarea').value = '';
+    document.getElementById('essayWordCountLabel').textContent = '0 words';
+    document.getElementById('essayCharCount').textContent = '0 characters';
+
+    document.getElementById('essaySetup').style.display   = 'none';
+    document.getElementById('essayWriting').style.display = 'block';
+    document.getElementById('essayResults').style.display = 'none';
+    document.getElementById('essayLoading').style.display = 'none';
+    setTimeout(() => document.getElementById('essayTextarea').focus(), 100);
+  } catch(e) {
+    toast('Failed to get essay title: ' + e.message, 'err');
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="bi bi-play-fill"></i> Start Writing';
+});
+
+// Word / char count
+document.getElementById('essayTextarea').addEventListener('input', () => {
+  const txt = document.getElementById('essayTextarea').value;
+  const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  document.getElementById('essayWordCountLabel').textContent = `${words} word${words!==1?'s':''}`;
+  document.getElementById('essayCharCount').textContent = `${txt.length} character${txt.length!==1?'s':''}`;
+});
+
+// Give up — go back to setup
+document.getElementById('essayGiveUpBtn').addEventListener('click', () => {
+  document.getElementById('essayWriting').style.display = 'none';
+  document.getElementById('essaySetup').style.display   = 'block';
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('levelPicker').classList.remove('visible');
+  document.getElementById('essayStartBtn').disabled = true;
+  document.getElementById('essayCatStatus').textContent = 'Select a category first';
+  essayState = { category: '', level: '', title: '', text: '' };
+});
+
+// Submit essay
+document.getElementById('essaySubmitBtn').addEventListener('click', async () => {
+  const txt = document.getElementById('essayTextarea').value.trim();
+  if (!txt || txt.split(/\s+/).length < 20) {
+    toast('Please write at least 20 words before submitting', 'err');
+    return;
+  }
+  essayState.text = txt;
+
+  document.getElementById('essayWriting').style.display  = 'none';
+  document.getElementById('essayLoading').style.display  = 'block';
+  document.getElementById('essayResults').style.display  = 'none';
+
+  // Cycle loading messages
+  const msgs = ['Checking topic relevance…', 'Scanning for grammar issues…', 'Analysing vocabulary…', 'Generating suggestions…'];
+  let mi = 0;
+  const msgEl = document.getElementById('essayLoadingMsg');
+  const msgTimer = setInterval(() => { mi=(mi+1)%msgs.length; msgEl.textContent=msgs[mi]; }, 1800);
+
+  try {
+    const result = await analyseEssay(essayState.title, essayState.text);
+    clearInterval(msgTimer);
+    renderEssayResults(result);
+  } catch(e) {
+    clearInterval(msgTimer);
+    toast('Analysis failed: ' + e.message, 'err');
+    document.getElementById('essayLoading').style.display  = 'none';
+    document.getElementById('essayWriting').style.display  = 'block';
+  }
+});
+
+// Write another
+document.getElementById('essayNewBtn').addEventListener('click', () => {
+  document.getElementById('essayResults').style.display = 'none';
+  document.getElementById('essaySetup').style.display   = 'block';
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('levelPicker').classList.remove('visible');
+  document.getElementById('essayStartBtn').disabled = true;
+  document.getElementById('essayCatStatus').textContent = 'Select a category first';
+  essayState = { category: '', level: '', title: '', text: '' };
+});
+
+// ── Essay Topic Pool ──────────────────────────────────────────
+const ESSAY_TOPICS = {
+  "Love & Relationships": {
+    easy: [
+      "My Ideal Best Friend",
+      "Why Saying Sorry Matters",
+      "What Makes a Good Family",
+      "A Person Who Changed My Life",
+      "Why Trust Is Important in Friendship",
+      "The Best Gift I Ever Received",
+      "Why Spending Time with Family Is Important",
+      "What I Love Most About My Friends",
+      "How to Be a Good Listener",
+      "My Favourite Memory with Someone I Love"
+    ],
+    medium: [
+      "How Social Media Changes the Way We Make Friends",
+      "Long-Distance Relationships: Are They Worth It?",
+      "How First Impressions Shape Our Relationships",
+      "The Role of Forgiveness in Lasting Relationships",
+      "How Technology Has Changed Dating",
+      "Why People Fear Commitment",
+      "The Difference Between Love and Infatuation",
+      "How Cultural Differences Affect Romantic Relationships",
+      "Why Childhood Friendships Are So Memorable",
+      "How to Maintain Relationships in a Busy World"
+    ],
+    hard: [
+      "Is Unconditional Love Truly Possible?",
+      "Does Modern Dating Culture Devalue Meaningful Relationships?",
+      "Love vs. Practicality: Which Should Guide Our Choices in Partners?",
+      "Can Jealousy Ever Be a Healthy Emotion in Relationships?",
+      "How Power Dynamics Shape Romantic Relationships",
+      "Is Monogamy a Natural or Societal Construct?",
+      "The Paradox of Vulnerability: Why Openness Both Strengthens and Destroys Relationships",
+      "Can Friendship Survive Romantic Feelings?",
+      "Does Suffering Together Create Deeper Bonds Than Happiness?",
+      "How Attachment Theory Explains Our Adult Relationships"
+    ]
+  },
+  "Science & Technology": {
+    easy: [
+      "My Favourite Gadget and Why I Love It",
+      "How the Internet Changed My Daily Life",
+      "Why Learning Science Is Important",
+      "A Technology I Cannot Live Without",
+      "How Smartphones Help Students",
+      "Why Space Exploration Excites Me",
+      "How Technology Helps Doctors Save Lives",
+      "The Best App I Use Every Day",
+      "Why Recycling Technology Matters",
+      "How Video Games Can Be Educational"
+    ],
+    medium: [
+      "The Benefits and Dangers of Social Media Algorithms",
+      "Should Students Be Allowed to Use AI for Homework?",
+      "How Renewable Energy Can Replace Fossil Fuels",
+      "The Pros and Cons of Self-Driving Cars",
+      "How Big Data Is Reshaping Healthcare",
+      "Are We Too Dependent on Smartphones?",
+      "The Ethical Implications of Genetic Engineering",
+      "How the Internet of Things Is Changing Our Homes",
+      "Should Technology Companies Be Regulated More Strictly?",
+      "The Role of Science in Combating Climate Change"
+    ],
+    hard: [
+      "The Paradox of Progress: Does Technology Make Us More Isolated?",
+      "Should Scientists Be Held Morally Responsible for How Their Discoveries Are Used?",
+      "The Singularity: Opportunity or Existential Threat?",
+      "Is the Rapid Pace of Technological Change Outstripping Human Adaptability?",
+      "Algorithmic Bias: Can Technology Ever Be Truly Neutral?",
+      "The Ethics of Human Enhancement Through Technology",
+      "Does Digital Surveillance Represent the End of Personal Privacy?",
+      "Can Open-Source Science Democratise Innovation?",
+      "How CRISPR Gene Editing Challenges Our Understanding of Nature and Identity",
+      "The Digital Divide: How Technological Inequality Perpetuates Social Inequality"
+    ]
+  },
+  "Philosophy": {
+    easy: [
+      "What Does Happiness Mean to Me?",
+      "Is It Always Wrong to Lie?",
+      "What Makes a Person Good?",
+      "Why Do People Believe in Different Things?",
+      "What Is the Meaning of Life?",
+      "Are Rules Always Fair?",
+      "Why Is Kindness Important?",
+      "Should We Always Follow Our Feelings?",
+      "Is Money the Key to Happiness?",
+      "What Would I Do If I Could Change One Thing in the World?"
+    ],
+    medium: [
+      "Do We Have Free Will, or Is Everything Predetermined?",
+      "Can Morality Exist Without Religion?",
+      "What Does It Mean to Live a Good Life?",
+      "Is Ignorance Ever Bliss?",
+      "The Ship of Theseus: What Makes Something the Same Over Time?",
+      "Should We Prioritise Happiness or Virtue?",
+      "Is It Possible to Be Completely Objective?",
+      "How Does Language Shape Our Reality?",
+      "What Is the Relationship Between Knowledge and Belief?",
+      "Do We Have Obligations to Future Generations?"
+    ],
+    hard: [
+      "Can Art Ever Be Truly Objective?",
+      "Does the Concept of Personal Identity Survive Over Time?",
+      "Is Justice More Important Than Mercy?",
+      "Can Nihilism Coexist with a Meaningful Life?",
+      "The Trolley Problem and the Limits of Utilitarian Ethics",
+      "Does Consciousness Require a Physical Basis?",
+      "Is There a Moral Duty to Be Happy?",
+      "Can We Ever Truly Know Other Minds?",
+      "The Ethics of Moral Relativism in a Globalised World",
+      "Does Power Inevitably Corrupt, or Is This a Self-Fulfilling Belief?"
+    ]
+  },
+  "History": {
+    easy: [
+      "A Historical Figure I Admire",
+      "What I Would Change About the Past",
+      "Why Learning History Is Important",
+      "The Most Important Invention in History",
+      "A Historical Event That Surprised Me",
+      "What Life Was Like Before the Internet",
+      "Why We Should Remember the Victims of War",
+      "My Favourite Period in History",
+      "How Ancient Civilisations Shaped Modern Life",
+      "What I Would Ask a Person from the Past"
+    ],
+    medium: [
+      "How World War II Shaped the Modern World",
+      "The Legacy of Colonialism in the 21st Century",
+      "Were the Crusades Driven by Faith or Politics?",
+      "How the Industrial Revolution Changed Society",
+      "The Role of Women in Shaping History",
+      "How Propaganda Has Been Used Throughout History",
+      "Was Napoleon a Hero or a Tyrant?",
+      "The Cold War: How Fear Shaped Global Politics",
+      "How the Printing Press Democratised Knowledge",
+      "The Long-Term Consequences of the Transatlantic Slave Trade"
+    ],
+    hard: [
+      "Does History Repeat Itself, or Do We Simply Fail to Learn from It?",
+      "The Historiography Debate: Can History Ever Be Truly Objective?",
+      "How Nationalist Narratives Distort Historical Understanding",
+      "The Role of Individuals vs. Structural Forces in Shaping History",
+      "Was the Dropping of Atomic Bombs on Japan Morally Justified?",
+      "Revisionism in History: When Is It Correction and When Is It Distortion?",
+      "How Oral Traditions Challenge Western Definitions of Historical Evidence",
+      "The Ethics of Removing Colonial Monuments",
+      "Could the Holocaust Have Been Prevented? A Study in Systemic Failure",
+      "How Economic Forces Drive Political Change: A Historical Perspective"
+    ]
+  },
+  "Environment & Nature": {
+    easy: [
+      "Why I Love Being Outdoors",
+      "How I Try to Help the Environment",
+      "My Favourite Animal and Why",
+      "Why Trees Are Important",
+      "What I Can Do to Reduce Plastic Waste",
+      "Why Clean Water Matters",
+      "A Nature Place I Would Love to Visit",
+      "How Weather Affects My Daily Life",
+      "Why Bees Are Important to Our World",
+      "What Happens When We Litter"
+    ],
+    medium: [
+      "Should Individuals or Governments Be Responsible for Fighting Climate Change?",
+      "The Pros and Cons of Nuclear Energy as a Clean Power Source",
+      "How Deforestation Threatens Global Biodiversity",
+      "Is Veganism the Most Effective Way to Reduce Your Carbon Footprint?",
+      "The Impact of Plastic Pollution on Marine Ecosystems",
+      "Should Endangered Species Be Cloned to Prevent Extinction?",
+      "How Urbanisation Affects Local Wildlife",
+      "The Role of Indigenous Knowledge in Environmental Conservation",
+      "Is Ecotourism Truly Sustainable?",
+      "How Climate Change Disproportionately Affects Developing Nations"
+    ],
+    hard: [
+      "Environmental Justice: Why Pollution and Climate Change Are Human Rights Issues",
+      "The Ethics of Geoengineering: Should We Artificially Alter the Climate?",
+      "Deep Ecology vs. Shallow Ecology: Rethinking Humanity's Place in Nature",
+      "Can Capitalism and Environmentalism Ever Be Compatible?",
+      "The Tragedy of the Commons: Is Collective Environmental Action Possible?",
+      "How the Language of Environmental Crisis Shapes — and Sometimes Hinders — Action",
+      "Is It Ethical to Prioritise Conservation Over Human Development?",
+      "The Rights of Nature: Should Rivers and Forests Have Legal Standing?",
+      "Climate Migration: How Environmental Collapse Will Reshape Global Demographics",
+      "The Sixth Mass Extinction: Human Responsibility and the Limits of Technological Solutions"
+    ]
+  },
+  "Society & Culture": {
+    easy: [
+      "A Tradition I Love in My Culture",
+      "How Festivals Bring People Together",
+      "What Makes a Good Neighbourhood",
+      "Why Volunteering Is Rewarding",
+      "A Custom from Another Culture I Admire",
+      "Why It Is Important to Respect Others",
+      "How Music Connects Different Cultures",
+      "What Society Means to Me",
+      "Why Manners Still Matter",
+      "A Social Problem I Wish I Could Solve"
+    ],
+    medium: [
+      "Is Social Media Making Society More or Less Connected?",
+      "How Immigration Enriches Cultural Identity",
+      "The Pros and Cons of Multiculturalism",
+      "How Celebrity Culture Influences Social Values",
+      "The Digital Divide: How Unequal Internet Access Affects Society",
+      "Is the Nuclear Family Still the Ideal Social Unit?",
+      "How Consumerism Shapes Our Sense of Identity",
+      "The Role of Religion in Modern Secular Society",
+      "How Peer Pressure Influences Individual Behaviour",
+      "Should Cultural Practices Be Preserved Even When They Conflict with Human Rights?"
+    ],
+    hard: [
+      "Cultural Appropriation vs. Cultural Exchange: Where Is the Line?",
+      "Does Postmodernism Undermine the Possibility of Shared Social Values?",
+      "How Inequality Is Reproduced Across Generations",
+      "Is 'Cancel Culture' a Form of Justice or a Threat to Free Expression?",
+      "The Commodification of Identity: How Capitalism Has Monetised Personal Expression",
+      "Soft Power and Cultural Imperialism in the 21st Century",
+      "Can a Pluralistic Society Achieve True Social Cohesion?",
+      "The Sociology of Deviance: Is Crime a Social Construct?",
+      "How Collective Memory Shapes National Identity",
+      "Intersectionality: A Framework for Understanding Overlapping Social Oppressions"
+    ]
+  },
+  "Art & Literature": {
+    easy: [
+      "My Favourite Book and What I Learned from It",
+      "Why I Enjoy Drawing or Painting",
+      "A Movie That Made Me Think Differently",
+      "Why Storytelling Is Important",
+      "My Favourite Type of Music and Why",
+      "How Art Makes Me Feel",
+      "A Fictional Character I Wish Was Real",
+      "Why Museums Are Worth Visiting",
+      "How Colour Affects Our Emotions",
+      "A Song That Means a Lot to Me"
+    ],
+    medium: [
+      "How Literature Helps Us Understand Other Cultures",
+      "The Role of Art in Social and Political Protest",
+      "Does Art Have a Responsibility to Be Moral?",
+      "How Digital Technology Is Changing Art",
+      "Should Controversial Art Be Censored?",
+      "The Relationship Between Suffering and Creativity",
+      "How Genre Fiction Has Gained Literary Respectability",
+      "Why Fairy Tales Still Matter to Adults",
+      "How Film Has Shaped Our Perception of History",
+      "The Decline of Reading: Is Literature Losing Its Cultural Relevance?"
+    ],
+    hard: [
+      "Can Art Ever Be Truly Objective?",
+      "The Death of the Author: Does Artistic Intent Matter?",
+      "How Postcolonial Literature Reclaims Narrative",
+      "Is Beauty an Objective Property or a Subjective Experience?",
+      "The Paradox of Tragedy: Why Do We Seek Out Painful Art?",
+      "Can Commercial Art Be Artistically Meaningful?",
+      "How Literary Modernism Reflects the Crisis of Modernity",
+      "The Ethics of Depicting Atrocity in Art and Literature",
+      "How Art Constructs and Deconstructs Social Reality",
+      "Mimesis vs. Expression: What Is the True Purpose of Art?"
+    ]
+  },
+  "Sports": {
+    easy: [
+      "My Favourite Sport and Why I Love It",
+      "A Sports Hero Who Inspires Me",
+      "Why Physical Activity Is Good for My Health",
+      "What I Learned from Playing as Part of a Team",
+      "My Most Exciting Sporting Memory",
+      "Why the Olympics Matter",
+      "How Sports Teach Important Life Skills",
+      "Should Every Child Be Required to Do Sport at School?",
+      "My Favourite Way to Stay Active",
+      "Why Sportsmanship Is More Important Than Winning"
+    ],
+    medium: [
+      "The Problem of Doping in Professional Sport",
+      "How Money Has Changed Football",
+      "Should Athletes Be Role Models for Society?",
+      "The Mental Health Challenges Faced by Elite Athletes",
+      "How Technology Is Transforming Sport",
+      "Are Extreme Sports Too Dangerous to Be Promoted?",
+      "The Growing Popularity of Esports: Is It a Real Sport?",
+      "How Sport Can Be a Tool for Social Change",
+      "The Gender Pay Gap in Professional Sport",
+      "Should Sports Events Like the Olympics Be Hosted by Developing Nations?"
+    ],
+    hard: [
+      "The Commercialisation of Sport: Does Money Corrupt Its Integrity?",
+      "Nationalism in Sport: Unity or Division?",
+      "The Ethics of Performance-Enhancing Technology in Sport",
+      "Can Sport Truly Bridge Racial and Cultural Divides?",
+      "The Body as a Commodity: Labour Rights in Professional Sport",
+      "Spectatorship and Tribal Identity: The Psychology of Sports Fandom",
+      "How Sports Media Creates and Destroys Athletic Identities",
+      "The Legacy Debate: Should Mega-Events Like the World Cup Be Justified by Economic Impact?",
+      "Pain, Sacrifice and Masculinity: The Ideology of Elite Sport",
+      "Is Competitive Sport an Expression of Human Potential or an Exploitation of Human Vulnerability?"
+    ]
+  },
+  "Travel & Adventure": {
+    easy: [
+      "A Place I Would Love to Visit One Day",
+      "My Most Memorable Holiday",
+      "What I Pack When I Travel",
+      "Why Travelling Is the Best Education",
+      "A Country Whose Food I Would Love to Try",
+      "How Travelling Changes the Way You See the World",
+      "My Ideal Adventure Holiday",
+      "What I Learned from Getting Lost",
+      "Why I Love Exploring New Places",
+      "The Strangest or Funniest Thing That Happened to Me While Travelling"
+    ],
+    medium: [
+      "Is Mass Tourism Destroying the Places We Love?",
+      "How Budget Travel Has Changed the Way People Explore the World",
+      "The Benefits and Drawbacks of Solo Travel",
+      "How Travel Challenges Our Assumptions About Other Cultures",
+      "Should We Feel Guilty About the Environmental Impact of Flying?",
+      "How Social Media Has Changed the Travel Experience",
+      "Is Authentic Travel Still Possible in the Age of Tourism?",
+      "Adventure Travel: Thrill-Seeking or Responsible Exploration?",
+      "How Slow Travel Offers a More Meaningful Experience Than Package Holidays",
+      "The Role of Travel in Personal Growth and Self-Discovery"
+    ],
+    hard: [
+      "Voluntourism: Well-Intentioned Harm or Genuine Development?",
+      "The Geopolitics of Tourism: How Travel Is Shaped by Power and Privilege",
+      "Is the Concept of 'Authentic Culture' Exploited for Tourist Consumption?",
+      "How Over-Tourism Threatens Cultural Heritage and Local Identities",
+      "The Ethics of Adventure Tourism in Fragile Ecosystems",
+      "Travel as a Tool of Soft Power and Cultural Diplomacy",
+      "How the Travel Industry Perpetuates Colonial Power Dynamics",
+      "The Future of Travel: Can Virtual Reality Replace Physical Exploration?",
+      "Nomadic Capitalism: How Remote Work Culture Is Reshaping Global Migration",
+      "The Paradox of Wanderlust: Why the Desire for Escape Is a Privilege"
+    ]
+  },
+  "Food & Cuisine": {
+    easy: [
+      "My Favourite Food and Why I Love It",
+      "How to Cook a Dish My Family Loves",
+      "Why Sharing a Meal Brings People Together",
+      "A Food I Used to Hate but Now Love",
+      "What a Perfect Breakfast Looks Like to Me",
+      "How Street Food Tells the Story of a Culture",
+      "Why I Enjoy Trying Food from Different Countries",
+      "The Best Meal I Have Ever Had",
+      "How Cooking Can Be a Form of Creative Expression",
+      "Why Eating Together as a Family Is Important"
+    ],
+    medium: [
+      "How Globalisation Has Changed the Way We Eat",
+      "The Rise of Plant-Based Diets: A Trend or a Necessity?",
+      "Should Fast Food Be More Heavily Regulated?",
+      "How Food Waste Is a Global Crisis We Can Address",
+      "The Cultural Significance of Traditional Recipes",
+      "How the Farm-to-Table Movement Is Reshaping the Food Industry",
+      "Is Organic Food Really Better for Our Health and the Planet?",
+      "The Ethics of Eating Meat in a World Aware of Animal Suffering",
+      "How Social Media Influencers Are Shaping Our Food Choices",
+      "The Hidden Costs of Cheap Food: Labour and Environment"
+    ],
+    hard: [
+      "Food Sovereignty vs. Free Trade: Who Controls What We Eat?",
+      "The Semiotics of Food: How What We Eat Communicates Identity and Power",
+      "Culinary Imperialism: How Western Diets Are Homogenising Global Food Culture",
+      "The Ethics of the Gig Economy in the Food Delivery Industry",
+      "Lab-Grown Meat: A Solution to the Environmental Crisis or an Ethical Minefield?",
+      "How Nutritional Science Has Been Manipulated by the Food Industry",
+      "Food Deserts and Dietary Inequality: How Poverty Determines What We Eat",
+      "The Paradox of Obesity and Hunger Coexisting in Modern Societies",
+      "How Fermentation and Traditional Food Preservation Embody Cultural Memory",
+      "Can Gastronomy Be Considered a Fine Art?"
+    ]
+  },
+  "Health & Wellness": {
+    easy: [
+      "Why Sleep Is So Important for My Health",
+      "How Exercise Makes Me Feel Better",
+      "My Favourite Way to Relax After a Long Day",
+      "Why Drinking Water Is Essential",
+      "How I Try to Eat Healthily",
+      "Why Mental Health Is Just as Important as Physical Health",
+      "What I Do When I Feel Stressed",
+      "The Benefits of Spending Time in Nature",
+      "Why Regular Check-Ups with the Doctor Matter",
+      "How a Healthy Routine Changes My Energy Levels"
+    ],
+    medium: [
+      "How Modern Lifestyles Contribute to the Rise of Mental Health Issues",
+      "Should Governments Introduce Sugar Taxes to Fight Obesity?",
+      "The Benefits and Risks of Alternative Medicine",
+      "How Screen Time Affects Our Physical and Mental Health",
+      "The Role of Exercise in Preventing Chronic Illness",
+      "Is the Healthcare System in Your Country Fair?",
+      "How Stress Affects the Body and Mind",
+      "The Stigma Around Mental Health: Why It Persists and How to Challenge It",
+      "How Workplace Culture Affects Employee Well-being",
+      "The Link Between Social Connection and Physical Health"
+    ],
+    hard: [
+      "The Medicalisation of Everyday Life: Are We Over-Diagnosing Normal Human Experience?",
+      "Healthcare as a Human Right vs. a Market Commodity",
+      "How the Pharmaceutical Industry Shapes Medical Research and Public Health Policy",
+      "The Ethics of Preventive Medicine and Genetic Screening",
+      "Mental Health in a Neoliberal World: Is Individual Therapy Enough?",
+      "How Racial Bias in Medicine Affects Health Outcomes for Minorities",
+      "The Obesity Paradox: Why Public Health Campaigns Often Fail",
+      "Digital Health: Promise or Peril for Patient Privacy and Autonomy?",
+      "The Burden of Proof: How Pseudoscience Exploits Gaps in Public Health Literacy",
+      "Should Vaccination Be Legally Mandated for the Public Good?"
+    ]
+  },
+  "Music": {
+    easy: [
+      "My Favourite Genre of Music and Why",
+      "A Song That Always Makes Me Happy",
+      "How Music Helps Me When I Am Sad",
+      "Why I Would Like to Learn a Musical Instrument",
+      "My Favourite Musician and What I Admire About Them",
+      "How Music Brings People Together",
+      "The Best Concert or Live Performance I Have Seen",
+      "How Music Has Changed Throughout My Lifetime",
+      "Why Background Music Affects My Concentration",
+      "What Music I Would Choose for the Most Important Moments of My Life"
+    ],
+    medium: [
+      "How Streaming Has Changed the Music Industry",
+      "The Influence of Music on Social and Political Movements",
+      "Is Modern Pop Music Less Creative Than Music from Previous Decades?",
+      "How Cultural Exchange Has Shaped Global Music",
+      "The Ethics of AI-Generated Music",
+      "How Music Affects Our Emotions and Mental State",
+      "The Role of Music in Cultural Identity",
+      "Has the Digital Age Killed the Album as an Art Form?",
+      "How Music Festivals Have Become a Cultural Phenomenon",
+      "The Debate Over Music Piracy and Artists' Rights"
+    ],
+    hard: [
+      "Music as Language: Can Sound Communicate What Words Cannot?",
+      "The Commodification of Subculture: How the Music Industry Absorbs Counterculture",
+      "Authenticity and Appropriation in Contemporary Music",
+      "How Music Theory Both Liberates and Constrains Creativity",
+      "The Politics of the Music Canon: Whose Music Gets Studied and Why?",
+      "Noise as Music: Where Does Art End and Provocation Begin?",
+      "How Recorded Sound Changed the Relationship Between Listener and Performance",
+      "Music, Memory and Identity: The Neurological and Cultural Ties Between Sound and Self",
+      "Can Music Be Morally Wrong? The Ethics of Lyrics and Representation",
+      "The Decline of Physical Music Formats: Loss of Tactile Culture or Progress?"
+    ]
+  },
+  "Economics & Finance": {
+    easy: [
+      "Why It Is Important to Save Money",
+      "How I Manage My Personal Budget",
+      "Why Financial Education Should Be Taught in School",
+      "The Pros and Cons of Credit Cards",
+      "What I Would Do If I Won the Lottery",
+      "Why Small Businesses Are Important to a Community",
+      "How Prices of Things Change Over Time",
+      "Why Working Hard Pays Off",
+      "The Difference Between Needs and Wants",
+      "How the Economy Affects Everyday Life"
+    ],
+    medium: [
+      "Should the Minimum Wage Be Increased?",
+      "The Pros and Cons of Cryptocurrency",
+      "How Income Inequality Affects Social Stability",
+      "Should Governments Provide Universal Basic Income?",
+      "The Role of Foreign Aid in Developing Countries",
+      "How Globalisation Has Affected Jobs in Developed Countries",
+      "The Ethics of Tax Avoidance by Large Corporations",
+      "How Consumer Debt Is Threatening Financial Stability",
+      "Is the Gig Economy Good or Bad for Workers?",
+      "How the 2008 Financial Crisis Changed Our Understanding of Risk"
+    ],
+    hard: [
+      "The Limits of GDP as a Measure of National Well-being",
+      "Neoliberalism and the Erosion of the Welfare State",
+      "Is Infinite Economic Growth Compatible with Environmental Sustainability?",
+      "The Financialisation of the Economy: When Finance Serves Itself, Not Society",
+      "How Behavioural Economics Challenges Classical Assumptions of Rationality",
+      "The Ethics of Austerity: Whose Burden Is Fiscal Responsibility?",
+      "How Rent-Seeking Behaviour Perpetuates Structural Inequality",
+      "Modern Monetary Theory: A Paradigm Shift or Dangerous Heterodoxy?",
+      "The Political Economy of Automation: Who Gains and Who Loses?",
+      "How Developing Nations Are Trapped in Cycles of Debt and Dependency"
+    ]
+  },
+  "Film & Entertainment": {
+    easy: [
+      "My Favourite Film and Why It Stayed with Me",
+      "A Movie Character I Would Most Like to Be",
+      "Why I Enjoy Watching Films with Friends or Family",
+      "The Funniest Show I Have Ever Watched",
+      "How Films Can Teach Us Important Lessons",
+      "My Favourite Genre of Movie and Why",
+      "How Special Effects Have Changed the Way Films Look",
+      "A Film That Made Me Cry",
+      "Why I Prefer Cinemas to Streaming at Home",
+      "How My Taste in Entertainment Has Changed as I Grew Up"
+    ],
+    medium: [
+      "How Streaming Services Have Disrupted the Film Industry",
+      "Do Violent Video Games or Films Cause Real-World Violence?",
+      "The Role of Representation in Modern Cinema",
+      "How Reality Television Affects Society's Values",
+      "The Influence of Hollywood on Global Culture",
+      "Should Film Ratings Be Stricter to Protect Young Audiences?",
+      "How Nostalgia Is Driving the Reboot and Sequel Culture in Hollywood",
+      "The Rise of International Cinema: Is Hollywood Losing Its Dominance?",
+      "How Online Review Culture Has Changed the Way We Consume Entertainment",
+      "The Ethics of Biopics: Where Does Storytelling End and Misrepresentation Begin?"
+    ],
+    hard: [
+      "The Male Gaze and the Politics of the Camera in Cinema",
+      "Does the Auteur Theory Still Hold in an Era of Committee-Driven Blockbusters?",
+      "How the Marvel Cinematic Universe Represents the Corporatisation of Storytelling",
+      "Film as Propaganda: Historical and Contemporary Examples",
+      "The Ethics of Depicting Real People in Dramatic Recreations",
+      "How Post-Modernism Manifests in Contemporary Film",
+      "The Spectacle vs. Narrative Debate in Contemporary Cinema",
+      "How Film Influences Collective Memory of Historical Events",
+      "The Political Economy of the Entertainment Industry: Who Controls the Narrative?",
+      "Is Prestige Television the New Literary Novel?"
+    ]
+  },
+  "Education": {
+    easy: [
+      "My Favourite Subject and Why I Love It",
+      "A Teacher Who Made a Difference in My Life",
+      "Why Reading Books Is Important",
+      "How I Motivate Myself to Study",
+      "The Best Way I Learn New Things",
+      "Why Education Opens Doors",
+      "What I Would Change About My School",
+      "How Group Projects Teach Important Skills",
+      "Why Learning a Second Language Is Valuable",
+      "My Dream Job and the Education I Need to Get There"
+    ],
+    medium: [
+      "Should University Education Be Free for Everyone?",
+      "The Pros and Cons of Homeschooling",
+      "How Technology Is Changing the Way We Learn",
+      "Is Standardised Testing an Effective Measure of Student Achievement?",
+      "Should Schools Teach Financial Literacy?",
+      "The Importance of Arts Education in a STEM-Focused Curriculum",
+      "How Teacher Quality Determines the Success of an Education System",
+      "The Problem of Grade Inflation in Higher Education",
+      "Should Students Have More Say in What They Learn?",
+      "How Education Systems Can Better Support Students with Learning Differences"
+    ],
+    hard: [
+      "The Hidden Curriculum: How Schools Reproduce Social Inequality",
+      "Critical Pedagogy and the Purpose of Education in a Democratic Society",
+      "Does the University System Serve Students or the Labour Market?",
+      "The Commodification of Education: When Learning Becomes a Product",
+      "How Standardised Curricula Suppress Indigenous and Alternative Knowledge Systems",
+      "The Neuroscience of Learning: How Educational Practice Has Ignored Brain Science",
+      "Epistemic Justice in Education: Whose Knowledge Counts?",
+      "How the Grade Economy Undermines Intrinsic Motivation and Deep Learning",
+      "Education as a Tool of Liberation vs. Domestication",
+      "The Ethics and Efficacy of Affirmative Action in University Admissions"
+    ]
+  },
+  "Urban Life": {
+    easy: [
+      "What I Love About Living in a City",
+      "The Best Thing About My Neighbourhood",
+      "How Public Transport Changed My Daily Life",
+      "Why Green Spaces in Cities Are Important",
+      "My Favourite Place in My City",
+      "How City Life Differs from Rural Life",
+      "The Challenges of Living in a Busy City",
+      "Why I Would Like to Live in Another City",
+      "How Cafés and Coffee Shops Shape City Culture",
+      "What Makes a City Feel Safe"
+    ],
+    medium: [
+      "How Gentrification Affects Local Communities",
+      "The Pros and Cons of Living in a Megacity",
+      "How Urban Design Influences Happiness and Well-being",
+      "The Challenge of Homelessness in Modern Cities",
+      "How Smart Cities Are Using Technology to Solve Urban Problems",
+      "The Role of Street Art in Urban Culture",
+      "How Noise Pollution Affects Urban Residents",
+      "Should Cities Ban Cars from Their Centres?",
+      "The Loneliness Epidemic in Urban Environments",
+      "How Mixed-Use Development Can Create More Vibrant Cities"
+    ],
+    hard: [
+      "The Right to the City: Urban Space as a Political Battleground",
+      "How Urban Planning Has Been Used as a Tool of Social Control",
+      "The Political Economy of Gentrification: Capital Accumulation in Urban Space",
+      "Surveillance Capitalism in the Smart City: Privacy in the Age of Urban Data",
+      "How Informal Settlements Challenge Western Models of Urban Development",
+      "The Suburbanisation of Poverty and the Decline of the Inner City",
+      "How Climate Change Will Reshape Urban Geographies",
+      "Broken Windows Theory and the Ethics of Zero-Tolerance Urban Policing",
+      "The Architecture of Power: How Buildings Communicate Authority and Exclusion",
+      "Utopian Urbanism: A History of Failure and What It Teaches Us"
+    ]
+  },
+  "Space & Universe": {
+    easy: [
+      "Why I Find Space Fascinating",
+      "If I Could Visit Any Planet, Where Would I Go?",
+      "Why the Moon Landing Was Such an Important Moment in History",
+      "What Life Might Be Like on Another Planet",
+      "Why Scientists Study Black Holes",
+      "How the Night Sky Has Inspired Human Creativity",
+      "What I Would Take with Me on a Mission to Mars",
+      "Why Space Exploration Is Worth the Investment",
+      "My Favourite Fact About the Solar System",
+      "How Looking at Stars Makes Me Feel"
+    ],
+    medium: [
+      "Should Humans Colonise Mars?",
+      "The Role of Private Companies in the New Space Race",
+      "How Space Exploration Has Advanced Technology on Earth",
+      "Are We Alone in the Universe? The Search for Extraterrestrial Life",
+      "The Ethics of Mining Asteroids and Other Celestial Bodies",
+      "How the Hubble Space Telescope Changed Our View of the Universe",
+      "The Problem of Space Debris: An Environmental Crisis Beyond Earth",
+      "Should Space Exploration Be an International Effort?",
+      "How Space Tourism Is Becoming a Reality — and Its Implications",
+      "The Fermi Paradox: Why Haven't We Found Alien Life?"
+    ],
+    hard: [
+      "The Overview Effect: How Seeing Earth from Space Changes Human Consciousness",
+      "Space Colonisation and the Ethics of Terraforming",
+      "The Militarisation of Space: A New Frontier for Geopolitical Competition",
+      "Multiverse Theory and Its Implications for Philosophy and Science",
+      "How the Cosmological Horizon Problem Challenges Our Understanding of Reality",
+      "The Existential Risk of Astronomical Events and Humanity's Obligation to Survive",
+      "Is the Anthropic Principle a Scientific Argument or a Philosophical Sleight of Hand?",
+      "Dark Matter and Dark Energy: The Universe We Cannot See",
+      "The Ethics of First Contact: How Should Humanity Respond to Extraterrestrial Intelligence?",
+      "Space as the Final Frontier of Capitalism: Power, Resources and the Commercialisation of the Cosmos"
+    ]
+  },
+  "Artificial Intelligence": {
+    easy: [
+      "How AI Helps Me in Daily Life",
+      "Why I Find Robots and AI Fascinating",
+      "Could a Robot Ever Be My Friend?",
+      "How AI Is Used in the Games I Play",
+      "What I Think AI Will Look Like in 20 Years",
+      "Why AI Cannot Replace Human Creativity",
+      "The Most Useful AI Tool I Have Used",
+      "How Virtual Assistants Have Changed the Way We Use Technology",
+      "Would I Trust a Self-Driving Car?",
+      "Why AI Needs Human Supervision"
+    ],
+    medium: [
+      "Should Students Be Allowed to Use AI for Homework?",
+      "How AI Is Changing the Job Market",
+      "The Pros and Cons of AI in Healthcare",
+      "Can AI Ever Be Truly Creative?",
+      "How Recommendation Algorithms Shape What We Watch, Read and Buy",
+      "The Risk of Deepfakes and AI-Generated Misinformation",
+      "How AI Is Being Used in Criminal Justice — and Why That Is Controversial",
+      "The Ethics of AI in Weapons Systems",
+      "Should AI Systems Be Required to Explain Their Decisions?",
+      "How AI Assistants Are Changing Human Communication"
+    ],
+    hard: [
+      "Algorithmic Governance: When AI Makes Decisions That Affect Human Lives",
+      "The Alignment Problem: Can We Build AI That Shares Human Values?",
+      "AI and the Future of Work: Redistribution, Disruption or Both?",
+      "The Epistemology of Machine Learning: What Does It Mean for an AI to 'Know' Something?",
+      "Surveillance Capitalism and the AI Data Economy",
+      "Bias in, Bias Out: How AI Systems Perpetuate Structural Inequality",
+      "Artificial General Intelligence: Utopian Dream or Existential Threat?",
+      "The Moral Status of Sentient AI: Do Machines Have Rights?",
+      "How Large Language Models Challenge Our Understanding of Language and Meaning",
+      "The Political Economy of AI: Who Owns the Intelligence of the Future?"
+    ]
+  },
+  "Psychology & Mindfulness": {
+    easy: [
+      "How Mindfulness Has Helped Me Manage Stress",
+      "Why It Is Important to Talk About Our Feelings",
+      "How I Recover When I Am Having a Bad Day",
+      "The Benefits of Keeping a Journal",
+      "Why Sleep Is Essential for Mental Well-being",
+      "How Gratitude Can Change Your Perspective",
+      "What I Do to Stay Positive",
+      "Why Comparing Ourselves to Others Makes Us Unhappy",
+      "How Breathing Exercises Help with Anxiety",
+      "The Importance of Setting Healthy Boundaries"
+    ],
+    medium: [
+      "How Social Media Affects Our Self-Esteem and Mental Health",
+      "The Psychology of Procrastination and How to Overcome It",
+      "Is Happiness a Choice or a Product of Circumstances?",
+      "How Childhood Experiences Shape Adult Personality",
+      "The Benefits and Risks of Positive Psychology",
+      "How Cognitive Biases Affect Our Decision-Making",
+      "The Role of Therapy in Addressing Mental Health Stigma",
+      "How Mindfulness Practices Have Been Adapted by Western Culture",
+      "Why Empathy Is Crucial for Social Harmony",
+      "The Connection Between Physical Health and Mental Well-being"
+    ],
+    hard: [
+      "The Medicalisation of Sadness: Has Psychiatry Pathologised Normal Human Experience?",
+      "Positive Psychology vs. Critical Psychology: Who Benefits from the Happiness Industry?",
+      "The Ethics of Psychological Manipulation in Marketing and Politics",
+      "How Attachment Theory Shapes Our Capacity for Intimacy",
+      "Trauma and Narrative: How Storytelling Helps and Hinders Psychological Healing",
+      "The Cultural Relativity of Mental Illness Diagnosis",
+      "Mindfulness as Neoliberal Self-Help: A Critical Perspective",
+      "The Free Will Debate in Light of Neuroscience and Psychology",
+      "How Groupthink and Social Conformity Drive Collective Irrationality",
+      "The Paradox of Self-Awareness: Can We Ever Truly Know Our Own Motivations?"
+    ]
+  },
+  "Politics & Leadership": {
+    easy: [
+      "What Makes a Good Leader?",
+      "Why Voting Is Important",
+      "A Political Figure I Admire and Why",
+      "What I Would Do If I Were President for a Day",
+      "Why Everyone Should Care About Politics",
+      "How Laws Protect Us",
+      "What Fairness Means in Society",
+      "Why Freedom of Speech Is Important",
+      "The Most Important Quality a Leader Should Have",
+      "How Young People Can Make a Difference in Politics"
+    ],
+    medium: [
+      "Should the Voting Age Be Lowered to 16?",
+      "The Pros and Cons of Direct Democracy",
+      "How Populism Has Reshaped Global Politics",
+      "The Role of Social Media in Modern Political Campaigns",
+      "Should Politicians Be Required to Have Relevant Experience Before Taking Office?",
+      "How Corruption Undermines Democratic Institutions",
+      "Is Political Polarisation a Threat to Democracy?",
+      "The Role of the Media in Shaping Political Opinion",
+      "How International Organisations Like the UN Can Be More Effective",
+      "Should Term Limits Be Mandatory for All Elected Officials?"
+    ],
+    hard: [
+      "The Crisis of Liberal Democracy in the 21st Century",
+      "How Populist Movements Exploit Democratic Institutions to Undermine Them",
+      "The Tension Between National Sovereignty and Global Governance",
+      "Is Technocracy a More Effective Form of Government Than Democracy?",
+      "The Ethics of Civil Disobedience in a Democratic Society",
+      "How Economic Inequality Distorts Political Representation",
+      "Realpolitik vs. Idealism: Can Foreign Policy Be Ethical?",
+      "The Biopolitics of Power: How Governments Control Bodies and Populations",
+      "Is There Such a Thing as a Just War?",
+      "How the Architecture of Social Media Platforms Has Become a Political Force"
+    ]
+  }
+};
+
+// ── API: Generate essay title (with local pool + AI fallback) ──
+const _usedTopics = {}; // track used topics per category+level to avoid repeats
+
+async function generateEssayTitle(category, level) {
+  // Try local pool first
+  const pool = ESSAY_TOPICS[category]?.[level];
+  if (pool && pool.length > 0) {
+    const key = `${category}|${level}`;
+    if (!_usedTopics[key]) _usedTopics[key] = new Set();
+    const used = _usedTopics[key];
+    // Find unused topics
+    const unused = pool.filter(t => !used.has(t));
+    const source = unused.length > 0 ? unused : pool; // reset if all used
+    if (unused.length === 0) used.clear();
+    const picked = source[Math.floor(Math.random() * source.length)];
+    used.add(picked);
+    return picked;
+  }
+  // Fallback to AI for categories not in pool
+  const levelGuide = {
+    easy:   'The title must be simple and relatable — about everyday personal experiences, common situations, or basic opinions. Avoid abstract concepts. Example style: "My Favourite Way to Spend a Weekend" or "Why Exercise is Important".',
+    medium: 'The title should require some personal reflection and examples — not too abstract but beyond basic. Example style: "How Social Media Changes the Way We Make Friends" or "The Importance of Learning a Second Language".',
+    hard:   'The title should be abstract, analytical or argumentative — requiring critical thinking, evidence and structured argument. Example style: "The Paradox of Progress: Does Technology Make Us More Isolated?" or "Can Art Ever Be Truly Objective?".'
+  };
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 120,
+      messages: [{
+        role: 'user',
+        content: `Generate exactly 1 essay title for the category: "${category}" at difficulty level: ${level.toUpperCase()}.
+
+Difficulty guideline: ${levelGuide[level] || levelGuide.medium}
+
+Respond with ONLY the title text — no quotes, no numbering, no extra explanation.`
+      }]
+    })
+  });
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  const data = await res.json();
+  const text = data.content?.map(b => b.text||'').join('').trim();
+  if (!text) throw new Error('Empty response');
+  return text;
+}
+
+// ── API: Analyse essay ─────────────────────────────────────────
+async function analyseEssay(title, essay) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1800,
+      messages: [{
+        role: 'user',
+        content: `You are an English writing coach. Analyse the following essay written for the title: "${title}"
+
+ESSAY:
+${essay}
+
+Respond ONLY with a valid JSON object — no markdown, no backticks, no commentary before or after. Use this exact structure:
+{
+  "topicRelevance": {
+    "score": "high",
+    "verdict": "one sentence verdict about whether the essay stays on topic",
+    "details": "2-3 sentences explaining the assessment"
+  },
+  "grammarIssues": [
+    {
+      "original": "the problematic phrase from the essay",
+      "correction": "the corrected version",
+      "explanation": "brief reason"
+    }
+  ],
+  "vocabularyImprovements": [
+    {
+      "word": "simple word used in essay",
+      "context": "short phrase showing how it was used",
+      "suggestion": "more professional alternative",
+      "reason": "why this improves the writing"
+    }
+  ],
+  "overallFeedback": "2-3 sentences of encouraging overall assessment with specific praise and one key improvement tip"
+}
+
+score must be exactly: "high", "medium", or "low"
+Limit grammarIssues to max 6 items. Limit vocabularyImprovements to max 6 items.
+If grammar is perfect, return an empty array for grammarIssues.`
+      }]
+    })
+  });
+  if (!res.ok) throw new Error(`API ${res.status}`);
+  const data = await res.json();
+  const raw = data.content?.map(b => b.text||'').join('').trim();
+  if (!raw) throw new Error('Empty response');
+  // Strip any accidental markdown fences
+  const clean = raw.replace(/^```[a-z]*\n?/,'').replace(/\n?```$/,'').trim();
+  return JSON.parse(clean);
+}
+
+// ── Render results ─────────────────────────────────────────────
+function renderEssayResults(r) {
+  document.getElementById('essayLoading').style.display  = 'none';
+  document.getElementById('essayResults').style.display  = 'block';
+
+  const wordCount = essayState.text.trim().split(/\s+/).length;
+  document.getElementById('essayResultMeta').textContent =
+    `"${essayState.title}" · ${wordCount} words · ${new Date().toLocaleString()}`;
+
+  // Relevance
+  const score = (r.topicRelevance?.score||'medium').toLowerCase();
+  const relCls = score==='high' ? 'rel-high' : score==='low' ? 'rel-low' : 'rel-medium';
+  const relIcon = score==='high' ? '✅' : score==='low' ? '❌' : '⚠️';
+  document.getElementById('relevanceBadge').innerHTML =
+    `<span class="relevance-badge ${relCls}">${relIcon} ${score.charAt(0).toUpperCase()+score.slice(1)} Relevance</span>`;
+  document.getElementById('relevanceVerdict').textContent = r.topicRelevance?.verdict || '';
+  document.getElementById('relevanceDetails').textContent = r.topicRelevance?.details || '';
+
+  // Grammar
+  const grammar = r.grammarIssues || [];
+  const gEl = document.getElementById('grammarList');
+  document.getElementById('grammarCount').textContent = grammar.length
+    ? `(${grammar.length} issue${grammar.length!==1?'s':''} found)`
+    : '';
+  if (!grammar.length) {
+    gEl.innerHTML = '<p style="color:var(--success);font-size:0.88rem;"><i class="bi bi-check-circle"></i> No major grammar issues found — well done!</p>';
+  } else {
+    gEl.innerHTML = grammar.map(g => `
+      <div class="grammar-item">
+        <div class="grammar-orig">✗ ${esc(g.original||'')}</div>
+        <div class="grammar-fix">✓ ${esc(g.correction||'')}</div>
+        <div class="grammar-why">${esc(g.explanation||'')}</div>
+      </div>`).join('');
+  }
+
+  // Vocabulary improvements
+  const vocab = r.vocabularyImprovements || [];
+  const vEl = document.getElementById('vocabImprovements');
+  if (!vocab.length) {
+    vEl.innerHTML = '<p style="color:var(--success);font-size:0.88rem;"><i class="bi bi-check-circle"></i> Vocabulary looks strong!</p>';
+  } else {
+    vEl.innerHTML = `<table class="vocab-improve-table">
+      <thead><tr><th>Original Word</th><th>Context</th><th>Suggestion</th><th>Why</th></tr></thead>
+      <tbody>${vocab.map(v => `
+        <tr>
+          <td><span class="word-orig">${esc(v.word||'')}</span></td>
+          <td style="color:var(--muted);font-style:italic;">${esc(v.context||'')}</td>
+          <td><span class="word-sugg">${esc(v.suggestion||'')}</span></td>
+          <td>${esc(v.reason||'')}</td>
+        </tr>`).join('')}
+      </tbody></table>`;
+  }
+
+  // Overall
+  document.getElementById('overallFeedback').textContent = r.overallFeedback || '';
+}
+
+// ── Init ──────────────────────────────────────────────────────
+document.getElementById('mMonth').value=nowMonth();
+</script>
+</body>
+</html>
